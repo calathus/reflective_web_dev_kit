@@ -3,22 +3,22 @@
 The goal of this project is to create small end to end sample application using component based web application.
 In which generic/mirror based approach are employed systematically.
 
-[portable_mirror] 
+###1. portable_mirror
 right now, darts:mirrors library cannot be used javascript mode. So if we directly use this library, most of code cannot be run on browser.
 This lib provides a portable mirror API to support (small subset of) mirror features in which dart:mirrors is not used. 
 There are two implementations for this API class. one depends on static classes, and the other depends on dart:mirror. 
 No code changes are required to run application on javascripts mode or Dartium mode(using Dart VM). 
 
-[json_mapper] 
+###2. json_mapper
 json mapping based on mirror library. this automatically map json to corresponding entity instance
 
-[coucdb] 
+###3.coucdb
 dao api for couchdb based on mirror/json_mapper. this provides server side json_proxy, and client side couchdb dao library
 
-[gui_component] 
+###4. gui_component
 a framework to create web application using component based design, also table/form are implemented as generic class using mirror.
 
-[sample_app]
+###5. sample_app
 This is a sample web application using these libraries.
 This web application supports CRUD operation using Table and Form.
 
