@@ -2,6 +2,8 @@
 
 The goal of this project is to create small end to end sample application using component based web application.
 In which generic/mirror based approach are employed systematically.
+See following blog site:
+[http://dartathus.blogspot.com](http://dartathus.blogspot.com/)
 
 ###1. portable_mirror
 right now, darts:mirrors library cannot be used javascript mode. So if we directly use this library, most of code cannot be run on browser.
