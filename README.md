@@ -22,6 +22,7 @@ a framework to create web application using component based design, also table/f
 This is a sample web application using these libraries.
 This web application supports CRUD operation using Table and Form.
 
+![Sample App](https://raw.github.com/calathus/reflective_web_dev_kit/master/doc/sample_app.png)
 
 ### To Do List ##
 1) the json_mapper is not complete, need to support list/map attribute
