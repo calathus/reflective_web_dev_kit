@@ -41,7 +41,7 @@ Here is the top level application code.
 I think it is small and provide how to create new component from anotehr component.
 This app class(CRUDView) itself can be used as com,ponent.
 
-
+```
 library sample_generic_gui;
 
 import 'dart:html';
@@ -160,7 +160,9 @@ class CRUDView extends Component {
       ..nodes.add(form.element)
       ..nodes.add(new Element.html("<footer class='section' id='footer'></footer>")));
 }
+```
 
+```
 class ExpenseTypeComp extends SelectComp<ExpenseType> {
   static const String EXPENSE_TYPE_INPUT = "g_expense_type_input";
   
@@ -181,7 +183,9 @@ class ExpenseTypeComp extends SelectComp<ExpenseType> {
   String getCode(ExpenseType et) => et.code;
   String getName(ExpenseType et) => et.name;
 }
+```
 
+```
 main() {
   // register reflection factory
   initClassMirrorFactory();
@@ -189,3 +193,5 @@ main() {
   Element uiContainer = document.query("#sample_generic_gui");
   CRUDView app = new CRUDView(null, uiContainer);
 }
+
+```
