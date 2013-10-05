@@ -1,7 +1,9 @@
 ## Overview ##
 
-The goal of this project is to create small end to end sample application using component based web application.
-In which generic/mirror based approach are employed systematically.
+The goal of this project is to create a small end2end sample application using component based approch.
+Dart's mirror library will be applied to several area of web application, GUI, Database Access, client/server communication.
+Thus the project is called 'reflective' web dev kit.
+
 See following blog site:
 [http://dartathus.blogspot.com](http://dartathus.blogspot.com/)
 
