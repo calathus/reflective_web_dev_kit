@@ -1,6 +1,3 @@
-r# Reflective web dev kit #
-![alt tag](https://github.com/calathus/reflective_web_dev_kit/blob/master/doc/sample_app.png)
-
 ## Overview ##
 
 The goal of this project is to create small end to end sample application using component based web application.
