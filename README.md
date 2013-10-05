@@ -12,7 +12,7 @@ No code changes are required to run application on javascripts mode or Dartium m
 ###2. json_mapper
 json mapping based on mirror library. this automatically map json to corresponding entity instance
 
-###3.coucdb
+###3.couchdb
 dao api for couchdb based on mirror/json_mapper. this provides server side json_proxy, and client side couchdb dao library
 
 ###4. gui_component
