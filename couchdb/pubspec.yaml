@@ -1,0 +1,17 @@
+name: couchdb
+version: 0.1.0
+author: Nicolas Calathus <calathus@gmail.com>
+description: couchdb dao
+homepage: https://github.com/calathus
+environment:
+  sdk: '>=0.7.5'
+dependencies:
+    browser: any
+    logging: any
+    logging_handlers: any
+    json_mapper:
+      path: ../json_mapper
+    portable_mirror:
+      path: ../portable_mirror
+    
+    

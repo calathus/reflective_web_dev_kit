@@ -1,0 +1,10 @@
+name: portable_mirror
+version: 0.1.0
+author: Nicolas Calathus <calathus@gmail.com>
+description: mirror lib which can run on javascript mode
+homepage: https://github.com/calathus
+environment:
+  sdk: '>=0.7.5'
+dependencies:
+    browser: any
+    

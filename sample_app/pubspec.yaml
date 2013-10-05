@@ -1,0 +1,20 @@
+name: sample_app
+version: 0.1.0
+author: Nicolas Calathus <calathus@gmail.com>
+description: sample_app using refrective web development components.
+homepage: https://github.com/calathus
+environment:
+  sdk: '>=0.7.5'
+dependencies:
+    browser: any
+    logging: any
+    logging_handlers: any
+    portable_mirror:
+      path: ../portable_mirror
+    json_mapper:
+      path: ../json_mapper
+    gui_component:
+      path: ../gui_component
+    couchdb:
+      path: ../couchdb
+    

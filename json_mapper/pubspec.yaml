@@ -1,0 +1,12 @@
+name: json_mapper
+version: 0.1.0
+author: Nicolas Calathus <calathus@gmail.com>
+description: reflective Json to entity/entity to json lib
+homepage: https://github.com/calathus
+environment:
+  sdk: '>=0.7.5'
+dependencies:
+    browser: any
+    portable_mirror: 
+      path: ../portable_mirror
+     
