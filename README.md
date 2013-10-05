@@ -41,10 +41,7 @@ Here is the top level application code.
 I think it is small and provide how to create new component from anotehr component.
 This app class(CRUDView) itself can be used as com,ponent.
 
-/*
- * author: N, calathus
- * date: 9/23/2013
- */
+
 library sample_generic_gui;
 
 import 'dart:html';
