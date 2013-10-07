@@ -30,6 +30,21 @@ This web application supports CRUD operation using Table and Form.
 
 ![Sample App](https://raw.github.com/calathus/reflective_web_dev_kit/master/doc/sample_app.png)
 
+### How to run ##
+1) run server:
+in sample_app/bin folder, there is a dirt file:
+SampleServer.dart
+
+run it with Dart command-line launch
+
+2) run client:
+in sample_app/web folder, there is two html files:
+sample_static_generic_gui.html
+sample_dynamic_generic_gui.html
+
+use them to launch application.
+
+
 ### To Do List ##
 ~~1) the json_mapper need to support list/map attribute~~
 this was supported.
