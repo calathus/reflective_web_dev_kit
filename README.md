@@ -31,8 +31,10 @@ This web application supports CRUD operation using Table and Form.
 ![Sample App](https://raw.github.com/calathus/reflective_web_dev_kit/master/doc/sample_app.png)
 
 ### To Do List ##
-1) the json_mapper is not complete, need to support list/map attribute
-2) also subclass identification should be done.
+~~1) the json_mapper need to support list/map attribute~~
+this was supported.
+
+2) for json_mapper, subclass identification should be done.
 
 3) should use annotation to allow more control over the GUI presentation for gui_components.
 4) use AOP style injection for DB access/logging.
