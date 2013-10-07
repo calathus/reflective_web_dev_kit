@@ -28,12 +28,14 @@ abstract class IClassMirror {
   IInstanceMirror reflect(Object obj);
   Type get type;
   Map<Symbol, IFieldType> get fieldTypes;
+  List<IClassMirror> get typeArguments;
 }
 
 abstract class IFieldType {
   Symbol get symbol;
   String get name; // convert symol to string
   Type get type;
+  IClassMirror get cmirror; // of type
 }
 
 //

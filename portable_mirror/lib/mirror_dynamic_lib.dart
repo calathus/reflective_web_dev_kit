@@ -23,44 +23,65 @@ class DynamicClassMirror implements IClassMirror {
   static Map<Type, DynamicClassMirror>  cmirrs = {};
   
   final Type _type;
-  ClassMirror _cmirror;
+  final ClassMirror _cmirror;
   MethodMirror _ctor;
-  Map<Symbol, IFieldType> _fieldTypes = {};
+  Map<Symbol, IFieldType> _fieldTypes;
   
-  DynamicClassMirror(this._type) {
-    _cmirror = reflectClass(_type);
-    
-    reflectClass(_type).constructors.forEach((k, v){
-      if (v.parameters.length == 0 && (_ctor == null || getSymbolName(k) == "${_type}.Default")) {
-        _ctor = v;
-      }
-    });
-    _cmirror.getters.forEach((Symbol symbol, MethodMirror md){
-      if (_cmirror.setters.containsKey(new Symbol('${getSymbolName(symbol)}='))) {
-        _fieldTypes[symbol] = new DynamicFieldType(symbol, md);
-      } else {
-        //print('>>>> ${_type} no setter ${symbol}');
-      }
-    });
-  }
+  factory DynamicClassMirror.create(Type type) => new DynamicClassMirror(type, reflectClass(type));
+  
+  DynamicClassMirror(this._type, this._cmirror);
   
   factory DynamicClassMirror.reflectClass(Type type) {
     DynamicClassMirror cmirr = cmirrs[type];
     if (cmirr == null) {
-      cmirr = new DynamicClassMirror(type);
+      cmirr = new DynamicClassMirror.create(type);
+      cmirrs[type] = cmirr;
+      print('>>>> ${type}');
     }
     return cmirr;
   }
   
-  Type get type => _type;
+//  Type get type => _cmirror.reflectedType;
+  Type get type {
+    //print('DynamicClassMirror get type>>>> ${_cmirror.runtimeType}');
+    //return _cmirror.reflectedType;
+    return _type;
+  }
+  
+  MethodMirror get ctor {
+    if (_ctor == null) {
+      _cmirror.constructors.forEach((k, v){
+        if (v.parameters.length == 0 && (_ctor == null || getSymbolName(k) == "${type}.Default")) {
+          _ctor = v;
+        }
+      });
+    }
+    if (_ctor == null) {
+      throw new Exception("no default constructor defined for ${type}");
+    }
+    return _ctor;
+  }
   
   IInstanceMirror newInstance() =>
-      reflect(_cmirror.newInstance(_ctor.constructorName, []).reflectee);
+      reflect(_cmirror.newInstance(ctor.constructorName, []).reflectee);
 
   IInstanceMirror reflect(Object obj) => new DynamicInstanceMirror(this, obj);
 
-  Map<Symbol, IFieldType> get fieldTypes => _fieldTypes;
-
+  Map<Symbol, IFieldType> get fieldTypes {
+    if (_fieldTypes == null) {
+      _fieldTypes = {};
+      _cmirror.getters.forEach((Symbol symbol, MethodMirror md){
+        if (_cmirror.setters.containsKey(new Symbol('${getSymbolName(symbol)}='))) {
+          _fieldTypes[symbol] = new DynamicFieldType(symbol, md);
+        } else {
+          //print('>>>> ${_type} no setter ${symbol}');
+        }
+      });
+    }
+    return _fieldTypes;
+  }
+  
+  List<IClassMirror> get typeArguments => _cmirror.typeArguments.fold([], (list, ClassMirror cmirr)=>list..add(new DynamicClassMirror(cmirr.reflectedType, cmirr)));
 }
 
 class DynamicFieldType implements IFieldType {
@@ -75,6 +96,10 @@ class DynamicFieldType implements IFieldType {
   Symbol get symbol => _symbol;
   String get name => _name;
   Type get type => (_md.returnType as ClassMirror).reflectedType;
+  IClassMirror get cmirror {
+    ClassMirror cmirror = _md.returnType as ClassMirror;
+    return new DynamicClassMirror(cmirror.reflectedType, cmirror); // field ClassMirror has reflectedType!!
+  }
 }
 
 //

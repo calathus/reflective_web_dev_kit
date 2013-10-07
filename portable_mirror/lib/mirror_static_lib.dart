@@ -16,17 +16,20 @@ class FieldInfo implements IFieldType {
   final Symbol _symbol;
   String _name;
   final Type _type;
+  IClassMirror _cmirror;
   
   final Getter getter;
   final Setter setter;
   
   FieldInfo(this._symbol, this._type, this.getter, this.setter) {
     _name = getSymbolName(_symbol);
+    _cmirror = ClassMirrorFactory.reflectClass(_type);
   }
   
   Symbol get symbol => _symbol;
   String get name => _name;
   Type get type => _type;
+  IClassMirror get cmirror => _cmirror;
 }
 
 typedef Object DefaultConstructor();
@@ -35,8 +38,9 @@ class StaticClassMirror implements IClassMirror {
   final Type _type;
   final DefaultConstructor ctor;
   final Map<Symbol, FieldInfo> fieldInfos;
+  final List<IClassMirror> _typeArguments;
   
-  StaticClassMirror(this._type, this.ctor, this.fieldInfos);
+  StaticClassMirror(this._type, this.ctor, this.fieldInfos, [this._typeArguments]);
   
   Type get type => _type;
   
@@ -45,6 +49,8 @@ class StaticClassMirror implements IClassMirror {
   IInstanceMirror reflect(Object obj) => new StaticInstanceMirror(this, obj);
 
   Map<Symbol, IFieldType> get fieldTypes => fieldInfos;
+  
+  List<IClassMirror> get typeArguments =>(_typeArguments == null)?const[]:_typeArguments;
 }
 
 //
@@ -90,6 +96,7 @@ class StaticField implements IField {
   void set value(Object obj) { _cmirror.fieldInfos[symbol].setter(_parent.reflectee, obj); }
   
   Type get type => _cmirror.fieldInfos[symbol].type;
+  IClassMirror get cmirror => _cmirror.fieldInfos[symbol].cmirror;
   
   StaticClassMirror get _cmirror => (_parent._cmirror as StaticClassMirror);
  }

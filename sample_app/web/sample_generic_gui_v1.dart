@@ -12,6 +12,84 @@ import "../lib/src/models.dart";
 import "../lib/src/sample_mirror_impl.dart";
 import "../lib/src/sample_json_mapper.dart";
 
+abstract class FSM {
+  final String name;
+  FSM(this.name);
+  FSM action(FSM state);
+}
+class EmptyState extends FSM {
+  EmptyState(): super('EMPTY');
+  FSM action(FSM state) {
+    switch (state.name) {
+      case 'EMPTY':
+        break;
+      case 'VIEW':
+        break;
+      case 'EDIT':
+        break;
+      case 'NEW':
+        break;
+      default:
+    }
+  }
+}
+
+class ViewState extends FSM {
+  ViewState(): super('VIEW');
+  FSM action(FSM state) {
+    switch (state.name) {
+      case 'EMPTY':
+        break;
+      case 'VIEW':
+        break;
+      case 'EDIT':
+        break;
+      case 'NEW':
+        break;
+      default:
+    }    
+  }
+}
+
+class EditState extends FSM {
+  EditState(): super('EDIT');
+  FSM action(FSM state) {
+    switch (state.name) {
+      case 'EMPTY':
+        break;
+      case 'VIEW':
+        break;
+      case 'EDIT':
+        break;
+      case 'NEW':
+        break;
+      default:
+    }
+  }
+}
+  
+class NewState extends FSM {
+  NewState(): super('NEW');
+  FSM action(FSM state) {
+    switch (state.name) {
+      case 'EMPTY':
+        break;
+      case 'VIEW':
+        break;
+      case 'EDIT':
+        break;
+      case 'NEW':
+        break;
+      default:  
+    }
+  }
+}
+
+FSM fsm = new EmptyState();
+void changeState(FSM newState) {
+  fsm = fsm.action(newState);
+}
+
 class CRUDView extends Component {
   static const String APP = "g_app_ctlr";
   final DivElement _uiRoot;

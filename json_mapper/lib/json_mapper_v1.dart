@@ -35,6 +35,7 @@ class SpecialTypeMapHandler implements ISpecialTypeMapHandler {
 //
 //
 abstract class IJsonMapper {
+  
   Object fromJson(Type modelType, String json);
   
   String toJson(final object, {StringSink output});
@@ -51,6 +52,7 @@ class JsonMapper implements IJsonMapper {
   }
 
   Object fromJson(Type modelType, String json) => parser.parse(modelType, json);
+  
   String toJson(final object, {StringSink output}) => stringifier.toJson(object, output: output);
 }
 
@@ -80,11 +82,19 @@ class EntityJsonParser {
 
 class EntityBuildJsonListener extends BuildJsonListener {
   final ISpecialTypeMapHandler mapHandler;
-  IClassMirror currentCmirror = null;
+  IClassMirror _currentCmirror = null;
   List<IClassMirror> cmirrorStack = [];
+  bool debug = true;
   
   EntityBuildJsonListener(this.mapHandler, Type modelType) {
     currentCmirror = ClassMirrorFactory.reflectClass(modelType);
+  }
+    
+  IClassMirror get currentCmirror => _currentCmirror;
+  
+  void set currentCmirror(IClassMirror currentCmirror) {
+    _currentCmirror = currentCmirror;
+    if (debug) print('### _currentCmirror: ${_currentCmirror.type}');
   }
   
   /** Pushes the currently active container (and key, if a [Map]). */
@@ -98,43 +108,84 @@ class EntityBuildJsonListener extends BuildJsonListener {
     super.popContainer();
     currentCmirror = cmirrorStack.removeLast();
   }
-  
   void beginObject() {
+    if (debug) print('--->1 beginObject _currentCmirror: ${_currentCmirror.type}, key: ${key}');
     super.beginObject();
     if (key != null) {
       IFieldType ft = currentCmirror.fieldTypes[new Symbol(key)];
       if (ft != null) {
-        currentCmirror = ClassMirrorFactory.reflectClass(ft.type);
+        currentCmirror = ft.cmirror;
+        //currentCmirror = ClassMirrorFactory.reflectClass(ft.type);
       } else {
         print('>> beginObject ${key}');
         currentCmirror = null;
       }
     }
+    if (debug) print('--->2 beginObject _currentCmirror: ${_currentCmirror.type}');
   }
 
   void endObject() {
+    if (debug) print('--->1 endObject _currentCmirror: ${_currentCmirror.type}');
     Map map = currentContainer;
-    ConstructorFun spCtor = mapHandler.entityCtor(currentCmirror.type);
-    if (spCtor != null) {
-      currentContainer = spCtor(map);
-    } else {
-      // Dart Beans
-      IInstanceMirror imiror = currentCmirror.newInstance();
-      currentCmirror.fieldTypes.forEach((_, IFieldType ft){
-        ConstructorFun vCtor = mapHandler.convert(ft.type);
-        var value = map[ft.name];
-        imiror.getField(ft.symbol).value = (vCtor != null)?vCtor(value):value;
-      });
-      currentContainer = imiror.reflectee;
+    if (currentCmirror.type != Map) {
+      Map map = currentContainer;
+      ConstructorFun spCtor = mapHandler.entityCtor(currentCmirror.type);
+      if (spCtor != null) {
+        currentContainer = spCtor(map);
+      } else {
+        // Dart Beans
+        IInstanceMirror imiror = currentCmirror.newInstance();
+        currentCmirror.fieldTypes.forEach((_, IFieldType ft){
+          ConstructorFun vCtor = mapHandler.convert(ft.type);
+          var value = map[ft.name];
+          imiror.getField(ft.symbol).value = (vCtor != null)?vCtor(value):value;
+        });
+        currentContainer = imiror.reflectee;
+      }
     }
     super.endObject();
+    if (debug) print('--->2 endObject _currentCmirror: ${_currentCmirror.type}');
+  }
+  
+  void beginArray() {
+    if (debug) print('--->1 beginArray _currentCmirror: ${_currentCmirror.type}, key: ${key}');
+    super.beginArray();
+    if (key != null) {
+      IFieldType ft = currentCmirror.fieldTypes[new Symbol(key)];
+      if (ft != null) {
+        currentCmirror = ft.cmirror;
+        //currentCmirror = ClassMirrorFactory.reflectClass(ft.type);
+      } else {
+        print('>> beginArray ${key}');
+        currentCmirror = null;
+      }
+      if (debug) print('>>>>beginArray: ${currentCmirror.type}');
+      // adhoc way, but how to get generic classList from ClassMirror???
+      String typeName = currentCmirror.type.toString();
+      if (typeName.startsWith("List<") || typeName.startsWith("Set<")) {
+        currentCmirror = currentCmirror.typeArguments[0];
+      } else {
+        throw new Exception(); //
+      }
+      key = null;
+    } else {
+      // top level
+    }
+    if (debug) print('--->2 beginArray _currentCmirror: ${_currentCmirror.type}');
+ }
+
+  void endArray() {
+   if (debug) print('--->1 endArray _currentCmirror: ${_currentCmirror.type}');
+   super.endArray();
+   if (debug) print('--->2 endArray _currentCmirror: ${_currentCmirror.type}');
   }
 }
 
 class EntityReviverJsonListener extends EntityBuildJsonListener {
   final _Reviver reviver;
+  
   EntityReviverJsonListener(ISpecialTypeMapHandler mapHandler, Type modelType, reviver(key, value))
-    : super(mapHandler, modelType), this.reviver = reviver;
+  : super(mapHandler, modelType), this.reviver = reviver;
 
   void arrayElement() {
     List list = currentContainer;
@@ -197,7 +248,7 @@ class EntityJsonStringifier extends _JsonStringifier {
     }
     
     //
-    IClassMirror cmirror = ClassMirrorFactory.reflectClass(t);
+    IClassMirror cmirror = ClassMirrorFactory.reflectClass(t); // ??
     IInstanceMirror iimirr = cmirror.reflect(object);
     
     sink.write('{');

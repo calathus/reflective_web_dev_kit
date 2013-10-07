@@ -14,6 +14,10 @@ class ButtonComp extends Component {
   
   ButtonComp(Component parent, this.label, this.onClick, {List<String>  classes: const [TABLE]}): super(parent, classes);
   
+  ButtonElement get node => (element as ButtonElement);
+  
+  Element get element => (super.element as ButtonElement);
+
   // DOM
   Element createElement() => addSubComponents0(new ButtonElement());
   
@@ -78,17 +82,9 @@ class TextAreaComp extends InputComp {
   static const String TEXTAREA_INPUT = "g_textarea_input";
   
   TextAreaElement _inputElem;
-  //bool _isNull = false;
   
   TextAreaComp(Component parent, String label, {List<String> classes: const [TEXTAREA_INPUT]}): super(parent, label, String, classes);
-  /*
-  Object get value => (_isNull)?null:_inputElem.value;
-  
-  void set value(Object v) {
-    _isNull = (v == null);
-    _inputElem.value = (_isNull)?"":(v as String); 
-  }
-  */
+
   Object get value => _inputElem.value;
   
   void set value(Object v) {
@@ -149,17 +145,9 @@ abstract class SelectComp<T> extends InputComp {
   }
   
   void set value(T v) {
-    //print("  find v: ${v}");
     int idx = 0;
     if (v != null) {
-      //_expenseTypeList.forEach((T et)=>print("  et: ${et} ? (${et == v})"));
       idx = _expenseTypeList.indexOf(v); // if not found then -1 
-      /*
-      if (idx < 0) {
-        print(">> not found ${v}");
-        return;
-      }
-      */
       idx++;
     }
     OptionElement oe = _selectElem.nodes[idx];
