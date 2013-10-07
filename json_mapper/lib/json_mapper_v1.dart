@@ -84,7 +84,7 @@ class EntityBuildJsonListener extends BuildJsonListener {
   final ISpecialTypeMapHandler mapHandler;
   IClassMirror _currentCmirror = null;
   List<IClassMirror> cmirrorStack = [];
-  bool debug = true;
+  bool debug = false;
   
   EntityBuildJsonListener(this.mapHandler, Type modelType) {
     currentCmirror = ClassMirrorFactory.reflectClass(modelType);
