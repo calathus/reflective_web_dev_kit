@@ -32,7 +32,7 @@ This web application supports CRUD operation using Table and Form.
 
 ### To Do List ##
 1) the json_mapper is not complete, need to support list/map attribute
-2) also subclass identification should be done.
+2) for json_mapper, subclass identification should be done.
 
 3) should use annotation to allow more control over the GUI presentation for gui_components.
 4) use AOP style injection for DB access/logging.
