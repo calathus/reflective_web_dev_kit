@@ -6,6 +6,7 @@ library gui_component_lib;
 
 import 'dart:html';
 import 'package:portable_mirror/mirror_api_lib.dart';
+import 'gui_annotation.dart';
 
 part 'src/gui_input_comp.dart';
 part 'src/gui_generic_form.dart';
@@ -80,3 +81,16 @@ abstract class Component {
   dynamic fold(var initialValue, dynamic combine(var previousValue, Component child)) =>
     children.fold(combine(initialValue, this), (pr, child) => child.fold(pr, combine));
 }
+
+Object getAnnotation(List list, bool cond(Object obj)) {
+  for (Object obj in list) {
+    if (obj is IInstanceMirror) {
+      IInstanceMirror imirr = obj;
+      if (cond(imirr.reflectee)) {
+        return imirr.reflectee;
+      }
+    }
+  }
+  return null;
+}
+

@@ -113,7 +113,10 @@ class TableHeader<E> extends Component {
   factory TableHeader.fromType(Table parent, Type modelType) {
     var th = new TableHeader(parent, []);
     parent.cmirror.fieldTypes.forEach((_, IFieldType ft){
-      th.headerCells.add(new HeaderCell.fromSymbol(th, ft.symbol, ft.type));
+      GUI_Table tab_anno = getAnnotation(ft.metadata, (obj)=>obj is GUI_Table);
+      if (tab_anno == null || !tab_anno.invisible) {
+        th.headerCells.add(new HeaderCell.fromSymbol(th, ft.symbol, ft.type));
+      }
     });
     return th;
   }
@@ -137,7 +140,16 @@ class HeaderCell extends Component {
     super(parent, classes), this.tableHeader = parent;
   
   factory HeaderCell.fromSymbol(TableHeader tableHeader, Symbol symbol, Type type) =>
-    new HeaderCell(tableHeader, symbol, type, getSymbolName(symbol));
+    new HeaderCell(tableHeader, symbol, type, getLabel(tableHeader,symbol));
+  
+  static String getLabel(TableHeader tableHeader, Symbol symbol) {
+    IFieldType ft = tableHeader.table.cmirror.fieldTypes[symbol];
+    GUI_Table tab_anno = getAnnotation(ft.metadata, (obj)=>obj is GUI_Table);
+    if (tab_anno != null && tab_anno.label != null) {
+        return tab_anno.label;
+    }
+    return getSymbolName(symbol);
+  }
   
   RowCell defaultRowCell(Row row) => new RowCell(row, this);
   

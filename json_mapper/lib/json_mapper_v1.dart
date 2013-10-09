@@ -36,7 +36,7 @@ class SpecialTypeMapHandler implements ISpecialTypeMapHandler {
 //
 abstract class IJsonMapper {
   
-  Object fromJson(Type modelType, String json);
+  Object fromJson(Type modelType, String json, {Map<String, String> attr_redirect_map: const{}});
   
   String toJson(final object, {StringSink output});
 }
@@ -51,7 +51,7 @@ class JsonMapper implements IJsonMapper {
     stringifier = new EntityJsonStringifier(mapHandler);
   }
 
-  Object fromJson(Type modelType, String json) => parser.parse(modelType, json);
+  Object fromJson(Type modelType, String json, {Map<String, String> attr_redirect_map: const{}}) => parser.parse(modelType, json, attr_redirect_map);
   
   String toJson(final object, {StringSink output}) => stringifier.toJson(object, output: output);
 }
@@ -70,11 +70,11 @@ class EntityJsonParser {
     _reviver = reviver;
   }
   
-  EntityBuildJsonListener getListener(Type modelType) =>(_reviver == null)?new EntityBuildJsonListener(mapHandler, modelType)
-      :new EntityReviverJsonListener(mapHandler, modelType, _reviver);
+  EntityBuildJsonListener getListener(Type modelType, Map<String, String> attr_redirect_map) =>(_reviver == null)?new EntityBuildJsonListener(mapHandler, modelType, attr_redirect_map)
+      :new EntityReviverJsonListener(mapHandler, modelType, _reviver, attr_redirect_map);
 
-  dynamic parse(Type modelType, String json) { 
-    EntityBuildJsonListener listener =  getListener(modelType);
+  dynamic parse(Type modelType, String json, Map<String, String> attr_redirect_map) { 
+    EntityBuildJsonListener listener =  getListener(modelType, attr_redirect_map);
     new JsonParser(json, listener).parse();
     return listener.result;
   }
@@ -82,11 +82,14 @@ class EntityJsonParser {
 
 class EntityBuildJsonListener extends BuildJsonListener {
   final ISpecialTypeMapHandler mapHandler;
+  final Map<String, String> attr_redirect_map;
+  
   IClassMirror _currentCmirror = null;
   List<IClassMirror> cmirrorStack = [];
+  
   bool debug = false;
   
-  EntityBuildJsonListener(this.mapHandler, Type modelType) {
+  EntityBuildJsonListener(this.mapHandler, Type modelType, this.attr_redirect_map) {
     currentCmirror = ClassMirrorFactory.reflectClass(modelType);
   }
     
@@ -137,7 +140,12 @@ class EntityBuildJsonListener extends BuildJsonListener {
         IInstanceMirror imiror = currentCmirror.newInstance();
         currentCmirror.fieldTypes.forEach((_, IFieldType ft){
           ConstructorFun vCtor = mapHandler.convert(ft.type);
-          var value = map[ft.name];
+          
+          // in choucg DB, id must be mapped from _id, rev from _rev depending on teh scenario..
+          String redirect_name = attr_redirect_map[ft.name];
+          String name = (redirect_name == null)?ft.name:redirect_name;
+          if (debug) print('===> redirect_name: ${redirect_name}, name: ${name}');
+          var value = map[name];
           imiror.getField(ft.symbol).value = (vCtor != null)?vCtor(value):value;
         });
         currentContainer = imiror.reflectee;
@@ -184,8 +192,8 @@ class EntityBuildJsonListener extends BuildJsonListener {
 class EntityReviverJsonListener extends EntityBuildJsonListener {
   final _Reviver reviver;
   
-  EntityReviverJsonListener(ISpecialTypeMapHandler mapHandler, Type modelType, reviver(key, value))
-  : super(mapHandler, modelType), this.reviver = reviver;
+  EntityReviverJsonListener(ISpecialTypeMapHandler mapHandler, Type modelType, reviver(key, value), Map<String, String> attr_redirect_map)
+  : super(mapHandler, modelType, attr_redirect_map), this.reviver = reviver;
 
   void arrayElement() {
     List list = currentContainer;

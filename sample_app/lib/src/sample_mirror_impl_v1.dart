@@ -7,17 +7,7 @@ import 'models.dart';
 /*
  * This must be invoked before calling any of these simple mirror APIs.
  */
-void initClassMirrorFactory() {
-  Type reflectType(Object obj) {
-    if (obj is Expense) {
-      return Expense;
-    } else 
-    {
-      // throw exception??
-      return null;
-    }
-  }
-  
+void initClassMirrorFactory() {  
   IClassMirror reflectClass(Type type) {
      if (type == Expense) {
       return new StaticClassMirror(Expense, ()=>new Expense.Default(), ExpenseFieldInfo);
@@ -26,7 +16,7 @@ void initClassMirrorFactory() {
       return null;
     }
   }
-  ClassMirrorFactory.register(reflectType, reflectClass);
+  ClassMirrorFactory.register(reflectClass);
 }
 /*
  * [variable declarations]

@@ -35,6 +35,7 @@ class ButtonComp extends Component {
 abstract class InputComp extends Component {
   String label;
   Type type;
+  GUI_Form _form_anno;
   
   InputComp(Component parent, this.label, this.type, List<String> classes): super(parent, classes);
   
@@ -42,6 +43,10 @@ abstract class InputComp extends Component {
   void set value(Object v);
   
   Element get inputElem;
+  
+  void set options(GUI_Form form_anno) {
+    _form_anno = form_anno;
+  }
   
   Element createElement() => addSubComponents0(newElem("div"));
   
@@ -74,6 +79,11 @@ class TextInputComp extends InputComp {
         _inputElem..type = "date";
       } 
     }
+    if (_form_anno != null) {
+      _inputElem
+        ..readOnly = _form_anno.readOnly
+        ..disabled = _form_anno.disabled;
+    }
     return _inputElem;
   }
 }
@@ -94,6 +104,11 @@ class TextAreaComp extends InputComp {
   TextAreaElement get inputElem {
     if (_inputElem == null) {
       _inputElem = newElem("textarea");
+    }
+    if (_form_anno != null) {
+      _inputElem
+        ..readOnly = _form_anno.readOnly
+        ..disabled = _form_anno.disabled;
     }
     return _inputElem;
   }
@@ -116,6 +131,11 @@ class CheckboxComp extends InputComp {
     if (_inputElem == null) {
       _inputElem = newElem("input");
       _inputElem..type = "checkbox";
+    }
+    if (_form_anno != null) {
+      _inputElem
+        ..readOnly = _form_anno.readOnly
+        ..disabled = _form_anno.disabled;
     }
     return _inputElem;
   }
@@ -159,7 +179,7 @@ abstract class SelectComp<T> extends InputComp {
       _selectElem = new SelectElement()
         ..nodes.addAll(_getOptions());
     }
-    return _selectElem;
+    return _selectElem;//how to make readonly???
   }
   
   String getCode(T t);

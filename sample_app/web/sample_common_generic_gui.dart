@@ -101,6 +101,7 @@ class CRUDView extends Component {
       ..classes.add("section")
       ..nodes.add(new Element.html("<header class='section'>${table.modelType} Table</header>"))
       ..nodes.add(_content = new Element.tag("div")
+        ..classes.add("g_crud_view_table")
         ..nodes.add(table.element))
       ..nodes.add(_actions = new Element.tag("div")
         ..id = "actions"

@@ -64,6 +64,77 @@ Unsupported operation: Declarations of generics have no reflected type
   }
 }
 
+class ChouchDBFetchData<T> {
+  
+  List<ChouchDBFetchRowData<T>> _rows;
+  T _t;
+  
+  List<ChouchDBFetchRowData<T>> get rows => _rows;
+  void set rows( List<ChouchDBFetchRowData<T>> rows) { _rows = rows; }
+  
+  T get t => _t;
+  void set t( T t) { _t = t; }
+ 
+}
+
+class ChouchDBFetchRowData<T> {
+  T _doc;
+  T get doc => _doc;
+  void set doc(T doc) { _doc = doc; }
+}
+
+
+test2() {
+  Type type = new ChouchDBFetchData<A>().runtimeType;
+  print(">> type: ${type}");
+/*
+  {
+  ClassMirror cmirr = reflectClass(type);
+  cmirr.getters.forEach((k, MethodMirror md){
+    Type tm = null;
+    if (md.returnType is ClassMirror) {
+      tm = (md.returnType as ClassMirror).reflectedType;
+      print(">>@ k: ${k}, tm: ${tm}");
+    } else if (md.returnType is TypeVariableMirror) {
+      TypeVariableMirror tvmirr = md.returnType;
+      print(">>@ tvmirr: ${tvmirr.runtimeType}");
+    }
+    
+  });
+  }
+
+  {
+    ClassMirror cmirr = reflect(new ChouchDBFetchData<A>()).type;
+    cmirr.getters.forEach((k, MethodMirror md){
+      Type tm = null;
+      if (md.returnType is ClassMirror) {
+        tm = (md.returnType as ClassMirror).reflectedType;
+        print(">>@@ k: ${k}, tm: ${tm}");
+      } else if (md.returnType is TypeVariableMirror) {
+        TypeVariableMirror tvmirr = md.returnType;
+        print(">>@@ tvmirr: ${tvmirr.runtimeType}");
+      }
+    });
+  }
+  */
+  {
+    ClassMirror cmirr = reflect(new List<A>()).type;
+    print(">>0@@ cmirr.reflectedType: ${cmirr.reflectedType}");
+    cmirr.getters.forEach((k, MethodMirror md){
+      Type tm = null;
+      if (md.returnType is ClassMirror) {
+        tm = (md.returnType as ClassMirror).reflectedType;
+        print(">>1@@ k: ${k}, tm: ${tm}");
+      } else if (md.returnType is TypeVariableMirror) {
+        TypeVariableMirror tvmirr = md.returnType;
+        print(">>2@@ tvmirr: ${tvmirr.runtimeType}");
+      }
+    });
+  }
+
+}
+
 main() {
-  test_generics();
+  //test_generics();
+  test2();
 }

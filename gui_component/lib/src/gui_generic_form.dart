@@ -26,8 +26,13 @@ class Form<E> extends Component {
     //
     cmirror = ClassMirrorFactory.reflectClass(modelType);
     cmirror.fieldTypes.forEach((_, IFieldType ft){
+      GUI_Form form_anno = getAnnotation(ft.metadata, (obj)=>obj is GUI_Form);
        _symbols.add(ft.symbol);
-      inputComps[ft.symbol] = inputFactoryCache.getInputComp(this, ft.name, ft.type);
+       InputComp inputComp = inputFactoryCache.getInputComp(this, ft.name, ft.type);
+       if (form_anno != null) {
+         inputComp.options = form_anno;
+       }
+      inputComps[ft.symbol] = inputComp;
     });
   }
   

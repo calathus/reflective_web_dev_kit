@@ -6,6 +6,7 @@ library sample_mirror;
 
 import 'package:portable_mirror/mirror_api_lib.dart';
 import 'package:portable_mirror/mirror_static_lib.dart';
+import 'package:gui_component/gui_annotation.dart';
 import 'models.dart';
 
 /*
@@ -20,6 +21,7 @@ Map<Type, DefaultConstroctorFun> staticClassMirrorFactory = {
 };
 
 void initClassMirrorFactory() {
+  /*
   Type reflectType(Object obj) {
     // this is annoying.
     // Dart has plan to support obj.type.
@@ -36,9 +38,10 @@ void initClassMirrorFactory() {
       return null;
     }
   }
+  */
   IClassMirror reflectClass(Type type) => [staticClassMirrorFactory[type]].fold(null, (_, ctor)=>((ctor == null)?null:ctor()));
 
-  ClassMirrorFactory.register(reflectType, reflectClass);
+  ClassMirrorFactory.register(reflectClass);
 }
 
 Type _String = String;
@@ -49,8 +52,8 @@ Type _bool = bool;
 
 Map<Symbol, FieldInfo> expenseFieldInfo =
 [
- new FieldInfo(const Symbol('id'), _String, (Expense e)=>e.id, (Expense e, String value) { e.id = value; }),
- new FieldInfo(const Symbol('rev'), _String, (Expense e)=>e.rev, (Expense e, String value) { e.rev = value; }),
+ new FieldInfo(const Symbol('id'), _String, (Expense e)=>e.id, (Expense e, String value) { e.id = value; }, [new GUI_Table(invisible: true), new GUI_Form(readOnly: true)]),
+ new FieldInfo(const Symbol('rev'), _String, (Expense e)=>e.rev, (Expense e, String value) { e.rev = value; }, [new GUI_Table(invisible: true), new GUI_Form(readOnly: true)]),
  new FieldInfo(const Symbol('expenseType'), _ExpenseType, (Expense e)=>e.expenseType, (Expense e, ExpenseType value) { e.expenseType = value; }),
  new FieldInfo(const Symbol('date'), _DateTime, (Expense e)=>e.date, (Expense e, DateTime value) { e.date = value; }),
  new FieldInfo(const Symbol('amount'), _num, (Expense e)=>e.amount, (Expense e, num value) { e.amount = value; }),

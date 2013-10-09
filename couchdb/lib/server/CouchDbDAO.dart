@@ -15,6 +15,21 @@ typedef void onError(Object e);
 typedef Future<HttpClientResponse> HttpClientResponseAction(HttpClientRequest req);
 typedef dynamic FromJsonMap(Map map); // dynamic should be replace by T!!
 
+/*
+class ChouchDBFetchData<T> {
+  List<ChouchDBFetchRowData<T>> _rows;
+  
+  List<ChouchDBFetchRowData<T>> get rows => _rows;
+  void set rows( List<ChouchDBFetchRowData<T>> rows) { _rows = rows; }
+}
+
+class ChouchDBFetchRowData<T> {
+  T _doc;
+  T get doc => _doc;
+  void set doc(T doc) { _doc = doc; }
+}
+*/
+
 class CouchDbDAO<T> {
   static final Logger log = _logger() ;
   static Logger _logger() {
@@ -33,12 +48,19 @@ class CouchDbDAO<T> {
   CouchDbDAO(this.modelType, this.jsonMapper, this.host, this.port, this.dbName): this.client = new HttpClient() {
      _tryCreateDb();
   }
-
+  // this is not working due to Dart VM bug. but it will be fixed soon..
+  /*
   Future<List<T>> getAll() {
     return _getData("/$dbName/_all_docs?include_docs=true")
         .then( (json) {
-          List<T> ts = new List<T>();
           if (json != "") {
+            print(">>>>>0 getAll: ${new ChouchDBFetchData<T>().runtimeType}");
+            print(">>>>>1 getAll: ${json} ");
+            ChouchDBFetchData<T> data = jsonMapper.fromJson(new ChouchDBFetchData<T>().runtimeType, json, attr_redirect_map: {'id':'_id', 'rev':'_rev'});
+            List<T> ts = data.rows.fold([], (list, ChouchDBFetchRowData<T> row)=>list..add(row.doc));
+            print(">>>>>2 getAll: ${ts}");
+            return ts;
+            /*
             Map data = parse(json); // temp
             for (var rowData in data["rows"]) {
               Map map = rowData["doc"];
@@ -51,12 +73,41 @@ class CouchDbDAO<T> {
               String json1 = stringify(map); // temp
               T t = jsonMapper.fromJson(modelType, json1); // [nc] be careful!! this may requires modelType instead of T!!!!!
               ts.add(t);
+              */
+          } else {
+            return new List<T>();
+          }
+        }).catchError((_)=>[]); // when it is empty, error will be thrown...
+  }
+  */
+
+  Future<List<T>> getAll() {
+    //print(">>>>>0 getAll:  ");
+    return _getData("/$dbName/_all_docs?include_docs=true")
+        .then( (json) {
+          //print(">>>>>1 getAll: ${json} ");
+          List<T> ts = new List<T>();
+          if (json != "") {
+            Map data = parse(json); // temp
+            for (var rowData in data["rows"]) {
+              Map map = rowData["doc"];
+              // [WARNING] here CouchDB uses '_id' instead of 'id'!
+              // json mapper shoudl be able to handle this replacement through annotation(see Dartson)
+              map['id'] = map['_id'];
+              map.remove('_id');
+              map['rev'] = map['_rev'];
+              map.remove('_rev');
+              String json1 = stringify(map); // temp
+              //print(">>>>>2 getAll: ${json1} ");
+              T t = jsonMapper.fromJson(modelType, json1); // [nc] be careful!! this may requires modelType instead of T!!!!!
+              //print(">>>>>3 getAll: ${t} ");
+              ts.add(t);
             }
           }
           return ts;
         }).catchError((_)=>[]); // when it is empty, error will be thrown...
   }
-
+  
   Future<T> insert(T t) {
     log.info(">> insert json: ${jsonMapper.toJson(t)}");
     return _getData('/$dbName', method: 'POST', data: jsonMapper.toJson(t)).then((String json){

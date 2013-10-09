@@ -1,5 +1,7 @@
 library ExpenseModels;
 
+import 'package:gui_component/gui_annotation.dart';
+
 class Expense  {
   String _id = null;
   String _rev = null;
@@ -15,17 +17,22 @@ class Expense  {
   factory Expense.random() {
     return new Expense("id-${_gid++}", "1", null, new DateTime.now(), _gid++, "??", true);
   }
-  // shoudl be always defined.. ??
+  // should be always defined.. ??
   factory Expense.Default() {
     return new Expense(null, null, null, null, null, null, null);
   }
   
+  @GUI_Table(invisible: true)
+  @GUI_Form(disabled: true)
   String get id => _id;
   void set id(String i) { _id = i; }
   
+  @GUI_Table(invisible: true)
+  @GUI_Form(disabled: true)
   String get rev => _rev;
   void set rev(String value) { _rev = value; }
   
+  @GUI_Table(label: "type")
   ExpenseType get expenseType => _type;
   void set expenseType(ExpenseType i) { _type = i; }
   

@@ -12,7 +12,7 @@ import 'package:portable_mirror/mirror_api_lib.dart';
  */
 void initClassMirrorFactory() {
   ClassMirrorFactory.register(
-      (Object e)=>reflect(e).type.reflectedType,
+      //(Object e)=>reflect(e).type.reflectedType,
       (Type type)=>new DynamicClassMirror.reflectClass(type));
 }
 
@@ -28,6 +28,8 @@ class DynamicClassMirror implements IClassMirror {
   Map<Symbol, IFieldType> _fieldTypes;
   
   factory DynamicClassMirror.create(Type type) => new DynamicClassMirror(type, reflectClass(type));
+  factory DynamicClassMirror.fromClassMirror(ClassMirror cmirror) => new DynamicClassMirror(cmirror.reflectedType, cmirror);
+  factory DynamicClassMirror.fromInstanceMirror(InstanceMirror imirror) => new DynamicClassMirror.fromClassMirror(imirror.type);
   
   DynamicClassMirror(this._type, this._cmirror);
   
@@ -36,7 +38,7 @@ class DynamicClassMirror implements IClassMirror {
     if (cmirr == null) {
       cmirr = new DynamicClassMirror.create(type);
       cmirrs[type] = cmirr;
-      print('>>>> ${type}');
+      //print('>>>> ${type}');
     }
     return cmirr;
   }
@@ -81,7 +83,7 @@ class DynamicClassMirror implements IClassMirror {
     return _fieldTypes;
   }
   
-  List<IClassMirror> get typeArguments => _cmirror.typeArguments.fold([], (list, ClassMirror cmirr)=>list..add(new DynamicClassMirror(cmirr.reflectedType, cmirr)));
+  List<IClassMirror> get typeArguments => _cmirror.typeArguments.fold([], (list, ClassMirror cmirr)=>list..add(new DynamicClassMirror.fromClassMirror(cmirr)));
 }
 
 class DynamicFieldType implements IFieldType {
@@ -96,9 +98,13 @@ class DynamicFieldType implements IFieldType {
   Symbol get symbol => _symbol;
   String get name => _name;
   Type get type => (_md.returnType as ClassMirror).reflectedType;
+  
+  List<IInstanceMirror> get metadata => _md.metadata.fold([], 
+      (list, InstanceMirror imirror)=>list..add(new DynamicInstanceMirror.fromInstanceMirror(imirror)));
+  
   IClassMirror get cmirror {
     ClassMirror cmirror = _md.returnType as ClassMirror;
-    return new DynamicClassMirror(cmirror.reflectedType, cmirror); // field ClassMirror has reflectedType!!
+    return new DynamicClassMirror.fromClassMirror(cmirror); // field ClassMirror has reflectedType!!
   }
 }
 
@@ -115,6 +121,9 @@ class DynamicInstanceMirror implements IInstanceMirror {
     _imirror = reflect(obj);
   }
   
+  factory DynamicInstanceMirror.fromInstanceMirror(InstanceMirror imirror) =>
+    new DynamicInstanceMirror(new DynamicClassMirror.fromInstanceMirror(imirror), imirror.reflectee);
+
   IClassMirror get cmirror => _cmirror;
   
   Object get reflectee => _imirror.reflectee;

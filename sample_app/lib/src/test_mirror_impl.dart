@@ -20,11 +20,9 @@ IClassMirror ListBClassMirror = new StaticClassMirror(_ListB, ()=>new List<B>(),
 Map<Type, DefaultConstroctorFun> staticClassMirrorFactory = {A: ()=>AClassMirror, B: ()=>BClassMirror, _ListB: ()=>ListBClassMirror};
 
 void initClassMirrorFactory() {
-  Type reflectType(Object obj) => obj.runtimeType;
-  
   IClassMirror reflectClass(Type type) => ((ctor)=>(ctor == null)?null:ctor())(staticClassMirrorFactory[type]);
 
-  ClassMirrorFactory.register(reflectType, reflectClass);
+  ClassMirrorFactory.register(reflectClass);
 }
 
 Type _ListB = new List<B>().runtimeType;

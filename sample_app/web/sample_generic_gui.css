@@ -24,7 +24,7 @@ td
 height:50px;
 }
 */
-#sample_container_id {
+#sample_generic_gui2 {
   width: 100%;
   height: 700px;
   position: relative;
@@ -35,7 +35,9 @@ height:50px;
 
 .section {
 /*  width: 580px;*/
-  width: 1180px;
+  overflow: auto;
+  width: 580px;
+/*  height: 780px;*/
   
   -moz-box-shadow:    5px 5px 6px 0px #aaa;
     -webkit-box-shadow: 5px 5px 6px 0px #aaa;
@@ -100,6 +102,12 @@ table, tr, td{
   margin: 1px;
 }
 
+div.g_crud_view_table {
+  overflow: auto;
+  height: 240px;
+  
+ }
+
 thead {
   font-weight: bold;
   text-align: center;  
@@ -120,7 +128,7 @@ td.g_hcell {  width: 30px; }
 td.id {  width: 300px; }
 td.rev {  width: 300px; }
 td.expenceTtype {  width: 100px; }
-td.date {  width: 150px; }
+td.date {  width: 80px; }
 td.detail {  width: 150px; }
 td.claimed { width: 60px; }
 td.delete { width: 60px; }

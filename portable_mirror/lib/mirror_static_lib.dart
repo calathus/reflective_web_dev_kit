@@ -16,19 +16,22 @@ class FieldInfo implements IFieldType {
   final Symbol _symbol;
   String _name;
   final Type _type;
+  List<IInstanceMirror> _metadata;
   IClassMirror _cmirror;
   
   final Getter getter;
   final Setter setter;
   
-  FieldInfo(this._symbol, this._type, this.getter, this.setter) {
+  FieldInfo(this._symbol, this._type, this.getter, this.setter, [List<Object> metadata = const[]]) {
     _name = getSymbolName(_symbol);
     _cmirror = ClassMirrorFactory.reflectClass(_type);
+    _metadata = metadata.fold([], (list, obj)=>list..add(new StaticInstanceMirror(ClassMirrorFactory.reflectClassFromObject(obj), obj)));
   }
   
   Symbol get symbol => _symbol;
   String get name => _name;
   Type get type => _type;
+  List<IInstanceMirror> get metadata => _metadata;
   IClassMirror get cmirror => _cmirror;
 }
 

@@ -8,16 +8,17 @@ typedef IClassMirror CMirrorFun(Type type);
 typedef Type GetTypeFun(Object obj);
 
 class ClassMirrorFactory {
-  static GetTypeFun _getType;
+  //static GetTypeFun _getType;
   static CMirrorFun _cmf;
   
-  static Type getType(Object e) => _getType(e);
+  static Type getType(Object e) => (e == null)?null:e.runtimeType;
   static IClassMirror reflectClass(Type type) => _cmf(type);
   
-  static IInstanceMirror reflect(Object e) => reflectClass(getType(e)).reflect(e);
+  static IInstanceMirror reflect(Object e) => reflectClassFromObject(e).reflect(e);
+  static IClassMirror reflectClassFromObject(Object e) => (e == null)?null:reflectClass(e.runtimeType);
 
-  static void register(GetTypeFun getType, CMirrorFun cmf) { 
-    _getType = getType;
+  static void register(CMirrorFun cmf) { 
+    //_getType = getType;
     _cmf = cmf;
   }
 }
@@ -35,6 +36,7 @@ abstract class IFieldType {
   Symbol get symbol;
   String get name; // convert symol to string
   Type get type;
+  List<IInstanceMirror> get metadata;
   IClassMirror get cmirror; // of type
 }
 
