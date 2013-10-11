@@ -38,6 +38,44 @@ In order to have this tool, you need to dfine Model class, and some top level Da
 
 ![CRUD class](https://raw.github.com/calathus/reflective_web_dev_kit/master/sample_app/web/sample_common_generic_gui.dart)
 
+```dart
+
+class CRUDView extends Component {
+  static const String APP = "g_app_ctlr";
+  final DivElement _uiRoot;
+  DivElement _content;
+  DivElement _actions;
+  
+  Table<Expense> table;
+  Form<Expense> form;
+  ButtonComp loadButtom;
+  ButtonComp newButtom;
+  ButtonComp saveButtom;
+  ButtonComp deleteButtom;
+  
+  ICouchDbClientDAO<Expense> dao = new CouchDbClientDAO<Expense>(Expense, sampleJsonMapper);
+  
+  CRUDView(Component parent, this._uiRoot): super(parent, const[APP]) {
+  
+    table = new Table<Expense>.fromModelType(this, Expense, formatFunctionMap: {ExpenseType: ExpenseTypeComp.format});
+    
+    form = new Form<Expense>(this, Expense, 
+        specialInputCompMap: {ExpenseType: ExpenseTypeComp.inputCompFactory},
+        adhocCompMap: {'detail': 'textarea'} 
+    );
+
+    loadButtom = new ButtonComp(this, "Load", (_) {
+      dao.fetchAll().then((List<Expense> es){
+        table.load(es);
+        //print('loaded data from db; ${es}');
+      });
+    });
+    
+    ....
+}
+
+
+```
 ### How to run ##
 0) install/run couchdb
 
