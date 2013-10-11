@@ -31,6 +31,8 @@ This web application supports CRUD operation using Table and Form.
 ![Sample App](https://raw.github.com/calathus/reflective_web_dev_kit/master/doc/sample_app2.png)
 
 ### How to run ##
+0) install/run couchdb
+
 1) run server:
 in sample_app/bin folder, there is a dirt file:
 SampleServer.dart
