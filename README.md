@@ -30,6 +30,14 @@ This web application supports CRUD operation using Table and Form.
 
 ![Sample App](https://raw.github.com/calathus/reflective_web_dev_kit/master/doc/sample_app2.png)
 
+This tool supports CRUD GUI and Data persistence through CouchDB.
+
+In order to have this tool, you need to dfine Model class, and some top level Dart classes.
+
+![Model class](https://raw.github.com/calathus/reflective_web_dev_kit/master/sample_app/lib/src/models.dart)
+
+![CRUD class](https://raw.github.com/calathus/reflective_web_dev_kit/master/sample_app/web/sample_common_generic_gui.dart)
+
 ### How to run ##
 0) install/run couchdb
 
