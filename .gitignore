@@ -8,3 +8,5 @@ pubspec.lock
 .idea
 *.js
 *.log
+*.js.deps
+*.js.map

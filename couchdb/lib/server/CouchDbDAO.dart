@@ -16,14 +16,14 @@ typedef Future<HttpClientResponse> HttpClientResponseAction(HttpClientRequest re
 typedef dynamic FromJsonMap(Map map); // dynamic should be replace by T!!
 
 /*
-class ChouchDBFetchData<T> {
-  List<ChouchDBFetchRowData<T>> _rows;
+class CouchDBFetchData<T> {
+  List<CouchDBFetchRowData<T>> _rows;
   
-  List<ChouchDBFetchRowData<T>> get rows => _rows;
-  void set rows( List<ChouchDBFetchRowData<T>> rows) { _rows = rows; }
+  List<CouchDBFetchRowData<T>> get rows => _rows;
+  void set rows( List<CouchDBFetchRowData<T>> rows) { _rows = rows; }
 }
 
-class ChouchDBFetchRowData<T> {
+class CouchDBFetchRowData<T> {
   T _doc;
   T get doc => _doc;
   void set doc(T doc) { _doc = doc; }
@@ -54,10 +54,10 @@ class CouchDbDAO<T> {
     return _getData("/$dbName/_all_docs?include_docs=true")
         .then( (json) {
           if (json != "") {
-            print(">>>>>0 getAll: ${new ChouchDBFetchData<T>().runtimeType}");
+            print(">>>>>0 getAll: ${new CouchDBFetchData<T>().runtimeType}");
             print(">>>>>1 getAll: ${json} ");
-            ChouchDBFetchData<T> data = jsonMapper.fromJson(new ChouchDBFetchData<T>().runtimeType, json, attr_redirect_map: {'id':'_id', 'rev':'_rev'});
-            List<T> ts = data.rows.fold([], (list, ChouchDBFetchRowData<T> row)=>list..add(row.doc));
+            CouchDBFetchData<T> data = jsonMapper.fromJson(new CouchDBFetchData<T>().runtimeType, json, attr_redirect_map: {'id':'_id', 'rev':'_rev'});
+            List<T> ts = data.rows.fold([], (list, CouchDBFetchRowData<T> row)=>list..add(row.doc));
             print(">>>>>2 getAll: ${ts}");
             return ts;
             /*
