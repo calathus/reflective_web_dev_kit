@@ -10,7 +10,8 @@ class GUI_Form {
   final String label;
   final bool readOnly;
   final bool disabled;
-  const GUI_Form({this.label, this.readOnly: false, this.disabled: false});
+  final bool checked;
+  const GUI_Form({this.label, this.readOnly: false, this.disabled: false, this.checked: false});
 }
 
 main() {

@@ -87,7 +87,7 @@ class EntityBuildJsonListener extends BuildJsonListener {
   IClassMirror _currentCmirror = null;
   List<IClassMirror> cmirrorStack = [];
   
-  bool debug = false;
+  bool debug = true;
   
   EntityBuildJsonListener(this.mapHandler, Type modelType, this.attr_redirect_map) {
     currentCmirror = ClassMirrorFactory.reflectClass(modelType);
@@ -139,6 +139,7 @@ class EntityBuildJsonListener extends BuildJsonListener {
         // Dart Beans
         IInstanceMirror imiror = currentCmirror.newInstance();
         currentCmirror.fieldTypes.forEach((_, IFieldType ft){
+          if (ft.priv) return; // avoid private fields
           ConstructorFun vCtor = mapHandler.convert(ft.type);
           
           // in choucg DB, id must be mapped from _id, rev from _rev depending on teh scenario..
@@ -261,9 +262,12 @@ class EntityJsonStringifier extends _JsonStringifier {
     
     sink.write('{');
     int idx = 0;
+    int lastIdx = 0;
     Map fmap = cmirror.fieldTypes;
-    int lastIdx = fmap.length-1;
+    fmap.forEach((k, IFieldType ft){ if (!ft.priv) lastIdx++; });
+    lastIdx--;
     fmap.forEach((k, IFieldType ft){
+      if (ft.priv) return; // avoid private fields.
       sink.write('"${ft.name}": ');
       stringifyValue(iimirr.getField(k).value);
       sink.write((idx == lastIdx)?"":",");

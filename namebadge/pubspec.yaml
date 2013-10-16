@@ -1,0 +1,16 @@
+name: namebage
+version: 0.1.0
+author: Nicolas Calathus <calathus@gmail.com>
+description: sampe for receptor.
+homepage: https://github.com/calathus
+environment:
+  sdk: '>=0.7.5'
+dependencies:
+    browser: any
+    portable_mirror:
+      path: ../portable_mirror
+    json_mapper:
+      path: ../json_mapper
+    gui_component:
+      path: ../gui_component
+    

@@ -82,10 +82,10 @@ class CouchDbDAO<T> {
   */
 
   Future<List<T>> getAll() {
-    //print(">>>>>0 getAll:  ");
+    print(">>>>>0 getAll:  ");
     return _getData("/$dbName/_all_docs?include_docs=true")
         .then( (json) {
-          //print(">>>>>1 getAll: ${json} ");
+          print(">>>>>1 getAll: ${json} ");
           List<T> ts = new List<T>();
           if (json != "") {
             Map data = parse(json); // temp
@@ -98,9 +98,9 @@ class CouchDbDAO<T> {
               map['rev'] = map['_rev'];
               map.remove('_rev');
               String json1 = stringify(map); // temp
-              //print(">>>>>2 getAll: ${json1} ");
+              print(">>>>>2 getAll: ${json1} ");
               T t = jsonMapper.fromJson(modelType, json1); // [nc] be careful!! this may requires modelType instead of T!!!!!
-              //print(">>>>>3 getAll: ${t} ");
+              print(">>>>>3 getAll: ${t} ");
               ts.add(t);
             }
           }

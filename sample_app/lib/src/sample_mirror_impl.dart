@@ -39,7 +39,8 @@ void initClassMirrorFactory() {
     }
   }
   */
-  IClassMirror reflectClass(Type type) => [staticClassMirrorFactory[type]].fold(null, (_, ctor)=>((ctor == null)?null:ctor()));
+//IInstanceMirror reflect(Object obj) => staticClassMirrorFactory[type].;
+IClassMirror reflectClass(Type type) => [staticClassMirrorFactory[type]].fold(null, (_, ctor)=>((ctor == null)?null:ctor()));
 
   ClassMirrorFactory.register(reflectClass);
 }

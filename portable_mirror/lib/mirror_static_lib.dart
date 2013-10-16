@@ -31,6 +31,8 @@ class FieldInfo implements IFieldType {
   Symbol get symbol => _symbol;
   String get name => _name;
   Type get type => _type;
+  bool get priv => _name.startsWith("_");
+  
   List<IInstanceMirror> get metadata => _metadata;
   IClassMirror get cmirror => _cmirror;
 }

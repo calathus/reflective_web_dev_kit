@@ -9,7 +9,7 @@ class CouchDbClientDAO<T> implements ICouchDbClientDAO<T> {
   static String url = "http://${couchdb_httpsrv_host}:${couchdb_httpsrv_port}";
   final Type modelType;
   final IJsonMapper jsonMapper;
-  final bool debug = false;
+  final bool debug = true;
    
   CouchDbClientDAO(this.modelType, this.jsonMapper);
   

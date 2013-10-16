@@ -6,7 +6,7 @@ part of sample_generic_gui;
 
 class CRUDView extends Component {
   static const String APP = "g_app_ctlr";
-  final DivElement _uiRoot;
+//  final DivElement _uiRoot;
   DivElement _content;
   DivElement _actions;
   
@@ -20,7 +20,7 @@ class CRUDView extends Component {
   // this should be injected by AOP approach from out side..
   ICouchDbClientDAO<Expense> dao = new CouchDbClientDAO<Expense>(Expense, sampleJsonMapper);
   
-  CRUDView(Component parent, this._uiRoot): super(parent, const[APP]) {
+  CRUDView(Component parent): super(parent, const[APP]) {
     table = new Table<Expense>.fromModelType(this, Expense, formatFunctionMap: {ExpenseType: ExpenseTypeComp.format});
     form = new Form<Expense>(this, Expense, 
         specialInputCompMap: {ExpenseType: ExpenseTypeComp.inputCompFactory},
@@ -30,7 +30,7 @@ class CRUDView extends Component {
     loadButtom = new ButtonComp(this, "Load", (_) {
       dao.fetchAll().then((List<Expense> es){
         table.load(es);
-        //print('loaded data from db; ${es}');
+        print('loaded data from db; ${es}');
       });
     });
     
@@ -83,7 +83,7 @@ class CRUDView extends Component {
       _changeButtonState(false, false, false);
     });
     
-    _uiRoot.nodes.add(element); // this 'element' tiggers DOM node creation!
+//    _uiRoot.nodes.add(element); // this 'element' tiggers DOM node creation!
   }
   
   void _changeButtonState(bool new_disable, bool save_disable, bool delete_disable) {

@@ -12,7 +12,7 @@ class ButtonComp extends Component {
   String label;
   MouseEventHandler onClick;
   
-  ButtonComp(Component parent, this.label, this.onClick, {List<String>  classes: const [TABLE]}): super(parent, classes);
+  ButtonComp(Component parent, this.label, this.onClick, {List<String> classes: const [TABLE]}): super(parent, classes);
   
   ButtonElement get node => (element as ButtonElement);
   
@@ -35,9 +35,12 @@ class ButtonComp extends Component {
 abstract class InputComp extends Component {
   String label;
   Type type;
+  String name;
   GUI_Form _form_anno;
+  Symbol monitored;
+  IField field;
   
-  InputComp(Component parent, this.label, this.type, List<String> classes): super(parent, classes);
+  InputComp(Component parent, this.label, this.type, this.name, List<String> classes): super(parent, classes);
   
   Object get value;
   void set value(Object v);
@@ -46,6 +49,21 @@ abstract class InputComp extends Component {
   
   void set options(GUI_Form form_anno) {
     _form_anno = form_anno;
+  }
+  /*
+  void bindProperty(Object monitordObject, Symbol symbol, void action()) {
+    IInstanceMirror imirr = ClassMirrorFactory.reflect(monitordObject); // this won't work for generic parent class!! [TODO]
+    this.field = imirr.getField(monitored);
+    if (this.field == null) {
+      throw new Exception('field not found, parent: ${parent.runtimeType}, symbol: ${monitored}');
+    }
+    listeners.add((_, comp){ 
+      action();
+    });
+  }
+  */
+  void onClick(void action(Event e, Component c)) {
+    listeners.add(action);
   }
   
   Element createElement() => addSubComponents0(newElem("div"));
@@ -56,7 +74,7 @@ abstract class InputComp extends Component {
   Element addSubComponents0(Element elm) => addListeners(
       elm
         ..nodes.add(newElem("label")..text = label)
-        ..nodes.add(inputElem));
+        ..nodes.add((name != null)?(inputElem..attributes['name'] = name):inputElem));
 }
 
 class TextInputComp extends InputComp {
@@ -64,7 +82,7 @@ class TextInputComp extends InputComp {
   
   InputElement _inputElem;
   
-  TextInputComp(Component parent, String label, Type type, {List<String> classes: const [TEXT_INPUT]}): super(parent, label, type, classes);
+  TextInputComp(Component parent, String label, Type type, {String name, List<String> classes: const [TEXT_INPUT]}): super(parent, label, type, name, classes);
   
   Object get value => stringToObject(_inputElem.value, type);
   
@@ -93,7 +111,7 @@ class TextAreaComp extends InputComp {
   
   TextAreaElement _inputElem;
   
-  TextAreaComp(Component parent, String label, {List<String> classes: const [TEXTAREA_INPUT]}): super(parent, label, String, classes);
+  TextAreaComp(Component parent, String label, {String name, List<String> classes: const [TEXTAREA_INPUT]}): super(parent, label, String, name, classes);
 
   Object get value => _inputElem.value;
   
@@ -119,7 +137,7 @@ class CheckboxComp extends InputComp {
   
   InputElement _inputElem;
   
-  CheckboxComp(Component parent, String label, {List<String> classes: const [CHECKBOX_INPUT]}): super(parent, label, bool, classes);
+  CheckboxComp(Component parent, String label, {String name, List<String> classes: const [CHECKBOX_INPUT]}): super(parent, label, bool, name, classes);
   
   Object get value => _inputElem.checked;
   
@@ -141,6 +159,39 @@ class CheckboxComp extends InputComp {
   }
 }
 
+class RadioComp extends InputComp {
+  static const String RADIO_INPUT = "g_radio_input";
+  
+  final String init_v;
+  final bool checked;
+  InputElement _inputElem;
+  
+  RadioComp(Component parent, String label, this.init_v, this.checked, {String name, List<String> classes: const [RADIO_INPUT]}): super(parent, label, String, name, classes);
+  
+  Object get value => _inputElem.value;
+  
+  void set value(String v) {
+    _inputElem.value = v; 
+  }
+  
+  InputElement get inputElem {
+    if (_inputElem == null) {
+      _inputElem = (newElem("input") as InputElement)
+        ..type = "radio"
+        ..value = init_v
+        ..checked = checked
+      ;
+    }
+    if (_form_anno != null) {
+      _inputElem
+        ..checked = _form_anno.checked
+        ..readOnly = _form_anno.readOnly
+        ..disabled = _form_anno.disabled;
+    }
+    return _inputElem;
+  }
+}
+
 abstract class SelectComp<T> extends InputComp {
   static const String SELECT_INPUT = "g_select_input";
   
@@ -148,7 +199,7 @@ abstract class SelectComp<T> extends InputComp {
   
   SelectElement _selectElem;
   
-  SelectComp(Component parent, String label, Type type, {List<String> classes: const [SELECT_INPUT]}): super(parent, label, type, classes) {
+  SelectComp(Component parent, String label, Type type, {String name, List<String> classes: const [SELECT_INPUT]}): super(parent, label, type, name, classes) {
     _expenseTypeList = entityTypes.values.toList();
   }
   

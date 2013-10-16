@@ -113,6 +113,7 @@ class TableHeader<E> extends Component {
   factory TableHeader.fromType(Table parent, Type modelType) {
     var th = new TableHeader(parent, []);
     parent.cmirror.fieldTypes.forEach((_, IFieldType ft){
+      if (ft.priv) return;
       GUI_Table tab_anno = getAnnotation(ft.metadata, (obj)=>obj is GUI_Table);
       if (tab_anno == null || !tab_anno.invisible) {
         th.headerCells.add(new HeaderCell.fromSymbol(th, ft.symbol, ft.type));

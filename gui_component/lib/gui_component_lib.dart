@@ -29,6 +29,7 @@ abstract class Component {
   
   final Component parent;
   final List<Component> children = [];
+  IField field;
   
   
   Component(Component this.parent, List<String> this.classes) {

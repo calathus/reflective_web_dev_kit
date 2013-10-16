@@ -20,5 +20,7 @@ main() {
   initClassMirrorFactory();
   
   Element uiContainer = document.query("#sample_generic_gui");
-  CRUDView app = new CRUDView(null, uiContainer);
+  CRUDView app = new CRUDView(null);
+  uiContainer.nodes.add(app.element); // this 'element' tiggers DOM node creation!
+
 }

@@ -763,3 +763,194 @@
 
 2013-10-08 20:40:56.855	couchdb.log	[INFO]:	==>> CouchDbDAO<2> update: exp: {"id": "29e676c48a74b796aa088285500008ca","rev": "2-221fd8d2f8361334abcc95c85732b17b","expenseType": {"name": "Travel", "code": "TRV"},"date": "2013-10-24 00:00:00.000","amount": 55,"detail": "fsdfg","isClaimed": false}
 2013-10-08 20:40:56.856	httpserver.log	[INFO]:	CouchDbHttpReqHandler _dao.update: Expense(29e676c48a74b796aa088285500008ca, 2-221fd8d2f8361334abcc95c85732b17b, Instance of 'ExpenseType': Travel, TRV, 2013-10-24 00:00:00.000, 55, fsdfg, false)
+2013-10-12 11:31:42.837	couchdb.log	[INFO]:	========================
+
+2013-10-12 11:31:42.866	couchdb.log	[INFO]:	creatingDb
+2013-10-12 11:31:42.866	couchdb.log	[INFO]:	existDB
+2013-10-12 11:31:42.867	couchdb.log	[INFO]:	_getData GET: /_all_dbs GET null
+2013-10-12 11:31:42.909	couchdb.log	[INFO]:	_writeData data: null
+2013-10-12 11:31:42.977	couchdb.log	[INFO]:	>>existDB<1> ["db","_users","expensedb"]
+
+2013-10-12 11:31:42.980	couchdb.log	[INFO]:	_tryCreateDb exist: true
+2013-10-15 17:08:30.274	couchdb.log	[INFO]:	========================
+
+2013-10-15 17:08:30.309	couchdb.log	[INFO]:	creatingDb
+2013-10-15 17:08:30.309	couchdb.log	[INFO]:	existDB
+2013-10-15 17:08:30.310	couchdb.log	[INFO]:	_getData GET: /_all_dbs GET null
+2013-10-15 17:08:30.360	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:08:30.445	couchdb.log	[INFO]:	>>existDB<1> ["db","_users","expensedb"]
+
+2013-10-15 17:08:30.448	couchdb.log	[INFO]:	_tryCreateDb exist: true
+2013-10-15 17:08:39.317	httpserver.log	[INFO]:	========================
+
+2013-10-15 17:08:39.323	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 17:08:39.327	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 17:08:39.328	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 17:08:39.330	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:08:39.492	httpserver.log	[INFO]:	loaded entities: []
+2013-10-15 17:08:43.024	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 17:08:43.025	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 17:08:43.026	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 17:08:43.030	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:08:43.046	httpserver.log	[INFO]:	loaded entities: []
+2013-10-15 17:15:27.030	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 17:15:27.031	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 17:15:27.032	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 17:15:27.037	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:15:27.056	httpserver.log	[INFO]:	loaded entities: []
+2013-10-15 17:26:42.224	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 17:26:42.225	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 17:26:42.225	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 17:26:42.226	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:26:42.232	httpserver.log	[INFO]:	loaded entities: []
+2013-10-15 17:26:45.224	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 17:26:45.225	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 17:26:45.226	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 17:26:45.228	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:26:45.237	httpserver.log	[INFO]:	loaded entities: []
+2013-10-15 17:27:22.755	couchdb.log	[INFO]:	========================
+
+2013-10-15 17:27:22.771	couchdb.log	[INFO]:	creatingDb
+2013-10-15 17:27:22.772	couchdb.log	[INFO]:	existDB
+2013-10-15 17:27:22.772	couchdb.log	[INFO]:	_getData GET: /_all_dbs GET null
+2013-10-15 17:27:22.815	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:27:22.849	couchdb.log	[INFO]:	>>existDB<1> ["db","_users","expensedb"]
+
+2013-10-15 17:27:22.852	couchdb.log	[INFO]:	_tryCreateDb exist: true
+2013-10-15 17:27:34.385	httpserver.log	[INFO]:	========================
+
+2013-10-15 17:27:34.386	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 17:27:34.387	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 17:27:34.388	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 17:27:34.390	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:27:34.438	httpserver.log	[INFO]:	loaded entities: []
+2013-10-15 17:31:39.039	couchdb.log	[INFO]:	========================
+
+2013-10-15 17:31:39.055	couchdb.log	[INFO]:	creatingDb
+2013-10-15 17:31:39.056	couchdb.log	[INFO]:	existDB
+2013-10-15 17:31:39.056	couchdb.log	[INFO]:	_getData GET: /_all_dbs GET null
+2013-10-15 17:31:39.107	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:31:39.142	couchdb.log	[INFO]:	>>existDB<1> ["db","_users","expensedb"]
+
+2013-10-15 17:31:39.145	couchdb.log	[INFO]:	_tryCreateDb exist: true
+2013-10-15 17:31:42.241	httpserver.log	[INFO]:	========================
+
+2013-10-15 17:31:42.244	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 17:31:42.245	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 17:31:42.246	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 17:31:42.248	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:31:42.299	httpserver.log	[INFO]:	loaded entities: []
+2013-10-15 17:32:55.910	couchdb.log	[INFO]:	========================
+
+2013-10-15 17:32:55.926	couchdb.log	[INFO]:	creatingDb
+2013-10-15 17:32:55.927	couchdb.log	[INFO]:	existDB
+2013-10-15 17:32:55.927	couchdb.log	[INFO]:	_getData GET: /_all_dbs GET null
+2013-10-15 17:32:55.969	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:32:56.005	couchdb.log	[INFO]:	>>existDB<1> ["db","_users","expensedb"]
+
+2013-10-15 17:32:56.008	couchdb.log	[INFO]:	_tryCreateDb exist: true
+2013-10-15 17:32:59.671	httpserver.log	[INFO]:	========================
+
+2013-10-15 17:32:59.673	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 17:32:59.676	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 17:32:59.678	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 17:32:59.681	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:32:59.734	httpserver.log	[INFO]:	loaded entities: []
+2013-10-15 17:33:21.391	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 17:33:21.392	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 17:33:21.393	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 17:33:21.396	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:33:21.413	httpserver.log	[INFO]:	loaded entities: []
+2013-10-15 17:36:03.583	couchdb.log	[INFO]:	========================
+
+2013-10-15 17:36:03.599	couchdb.log	[INFO]:	creatingDb
+2013-10-15 17:36:03.600	couchdb.log	[INFO]:	existDB
+2013-10-15 17:36:03.600	couchdb.log	[INFO]:	_getData GET: /_all_dbs GET null
+2013-10-15 17:36:03.649	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:36:03.684	couchdb.log	[INFO]:	>>existDB<1> ["db","_users","expensedb"]
+
+2013-10-15 17:36:03.687	couchdb.log	[INFO]:	_tryCreateDb exist: true
+2013-10-15 17:36:09.629	httpserver.log	[INFO]:	========================
+
+2013-10-15 17:36:09.630	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 17:36:09.632	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 17:36:09.633	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 17:36:09.634	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:36:09.683	httpserver.log	[INFO]:	loaded entities: []
+2013-10-15 17:40:06.647	couchdb.log	[INFO]:	========================
+
+2013-10-15 17:40:06.664	couchdb.log	[INFO]:	creatingDb
+2013-10-15 17:40:06.665	couchdb.log	[INFO]:	existDB
+2013-10-15 17:40:06.665	couchdb.log	[INFO]:	_getData GET: /_all_dbs GET null
+2013-10-15 17:40:06.711	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:40:06.748	couchdb.log	[INFO]:	>>existDB<1> ["db","_users","expensedb"]
+
+2013-10-15 17:40:06.751	couchdb.log	[INFO]:	_tryCreateDb exist: true
+2013-10-15 17:40:09.964	httpserver.log	[INFO]:	========================
+
+2013-10-15 17:40:09.966	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 17:40:09.967	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 17:40:09.968	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 17:40:09.970	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 17:40:10.018	httpserver.log	[INFO]:	loaded entities: []
+2013-10-15 18:01:48.806	couchdb.log	[INFO]:	========================
+
+2013-10-15 18:01:48.823	couchdb.log	[INFO]:	creatingDb
+2013-10-15 18:01:48.823	couchdb.log	[INFO]:	existDB
+2013-10-15 18:01:48.824	couchdb.log	[INFO]:	_getData GET: /_all_dbs GET null
+2013-10-15 18:01:48.875	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 18:01:48.910	couchdb.log	[INFO]:	>>existDB<1> ["db","_users","expensedb"]
+
+2013-10-15 18:01:48.913	couchdb.log	[INFO]:	_tryCreateDb exist: true
+2013-10-15 18:01:52.554	httpserver.log	[INFO]:	========================
+
+2013-10-15 18:01:52.555	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 18:01:52.557	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 18:01:52.557	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 18:01:52.559	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 18:01:52.625	httpserver.log	[INFO]:	loaded entities: [Expense(1d1a636bdd03d0ec510d84d0890021a2, 3-b64cb3a6f8b01578b124027cfd7bbd02, Instance of 'ExpenseType': Hotel, HT, 2013-09-06 00:00:00.000, 2.0, kkk??, false), Expense(1d1a636bdd03d0ec510d84d0890029a1, 3-8f58e06d99caf4d87701e9060b9c9087, Instance of 'ExpenseType': Travel, TRV, 2013-09-12 00:00:00.000, 3.0, bnlkjkj, false), Expense(1d1a636bdd03d0ec510d84d089003e3c, 2-81f1d1dd03b2f002fbd8cf3cc01a1e88, Instance of 'ExpenseType': Hotel, HT, 2013-09-12 00:00:00.000, 2.0, kjzczx,,,,cv, false), Expense(1d1a636bdd03d0ec510d84d089004b80, 11-12b67b80da9ba0b1be161c7a25a13feb, Instance of 'ExpenseType': Travel, TRV, 2013-09-06 00:00:00.000, 88, adskjsdfhs, false), Expense(29e676c48a74b796aa088285500008ca, 2-221fd8d2f8361334abcc95c85732b17b, Instance of 'ExpenseType': Travel, TRV, 2013-10-24 00:00:00.000, 55, fsdfg, false), Expense(29e676c48a74b796aa08828550000f80, 1-4fd01490c0d44a8fd5392f5d5b0aaf31, Instance of 'ExpenseType': Books, BK, 2013-10-12 00:00:00.000, 44, xbxcvb, false), Expense(29e676c48a74b796aa088285500017bd, 1-46ca8ca54290ee986497b9c10d71fb1f, Instance of 'ExpenseType': Hotel, HT, 2013-10-03 00:00:00.000, 555, cvxcb, false), Expense(29e676c48a74b796aa0882855000243e, 1-0f0c0d76c03d85ee88368ff1c1239731, Instance of 'ExpenseType': Books, BK, 2013-10-30 00:00:00.000, 55, xxcvbx, false), Expense(29e676c48a74b796aa08828550003365, 1-6cb14d818b8e5ef04f7107cabdd07031, Instance of 'ExpenseType': Books, BK, 2013-10-10 00:00:00.000, 555, sdfsgdfg, false), Expense(29e676c48a74b796aa08828550003b5b, 1-a4b6434171cf8e4e3dc704a220cb0bda, Instance of 'ExpenseType': Hotel, HT, 2013-10-05 00:00:00.000, 55, dfsdf, false), Expense(553fb072dca952b19a08df62ff0003e0, 1-3a89239149eb0fd0d18fb2a74d5c886b, Instance of 'ExpenseType': Travel, TRV, 2013-10-25 00:00:00.000, 2222, asasasasd, true), Expense(553fb072dca952b19a08df62ff0006da, 1-9188136408fb811d4ac3ebf265eed618, Instance of 'ExpenseType': Travel, TRV, 2013-10-10 00:00:00.000, 99, jhghjg, false), Expense(cb79a73fe1c504ee847e60801e00733f, 7-2e3e66be911b1178bea1c8639166e64d, Instance of 'ExpenseType': Hotel, HT, 2013-10-02 00:00:00.000, 333, oko, false)]
+2013-10-15 18:05:42.866	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 18:05:42.867	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 18:05:42.868	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 18:05:42.870	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 18:05:42.908	httpserver.log	[INFO]:	loaded entities: [Expense(1d1a636bdd03d0ec510d84d0890021a2, 3-b64cb3a6f8b01578b124027cfd7bbd02, Instance of 'ExpenseType': Hotel, HT, 2013-09-06 00:00:00.000, 2.0, kkk??, false), Expense(1d1a636bdd03d0ec510d84d0890029a1, 3-8f58e06d99caf4d87701e9060b9c9087, Instance of 'ExpenseType': Travel, TRV, 2013-09-12 00:00:00.000, 3.0, bnlkjkj, false), Expense(1d1a636bdd03d0ec510d84d089003e3c, 2-81f1d1dd03b2f002fbd8cf3cc01a1e88, Instance of 'ExpenseType': Hotel, HT, 2013-09-12 00:00:00.000, 2.0, kjzczx,,,,cv, false), Expense(1d1a636bdd03d0ec510d84d089004b80, 11-12b67b80da9ba0b1be161c7a25a13feb, Instance of 'ExpenseType': Travel, TRV, 2013-09-06 00:00:00.000, 88, adskjsdfhs, false), Expense(29e676c48a74b796aa088285500008ca, 2-221fd8d2f8361334abcc95c85732b17b, Instance of 'ExpenseType': Travel, TRV, 2013-10-24 00:00:00.000, 55, fsdfg, false), Expense(29e676c48a74b796aa08828550000f80, 1-4fd01490c0d44a8fd5392f5d5b0aaf31, Instance of 'ExpenseType': Books, BK, 2013-10-12 00:00:00.000, 44, xbxcvb, false), Expense(29e676c48a74b796aa088285500017bd, 1-46ca8ca54290ee986497b9c10d71fb1f, Instance of 'ExpenseType': Hotel, HT, 2013-10-03 00:00:00.000, 555, cvxcb, false), Expense(29e676c48a74b796aa0882855000243e, 1-0f0c0d76c03d85ee88368ff1c1239731, Instance of 'ExpenseType': Books, BK, 2013-10-30 00:00:00.000, 55, xxcvbx, false), Expense(29e676c48a74b796aa08828550003365, 1-6cb14d818b8e5ef04f7107cabdd07031, Instance of 'ExpenseType': Books, BK, 2013-10-10 00:00:00.000, 555, sdfsgdfg, false), Expense(29e676c48a74b796aa08828550003b5b, 1-a4b6434171cf8e4e3dc704a220cb0bda, Instance of 'ExpenseType': Hotel, HT, 2013-10-05 00:00:00.000, 55, dfsdf, false), Expense(553fb072dca952b19a08df62ff0003e0, 1-3a89239149eb0fd0d18fb2a74d5c886b, Instance of 'ExpenseType': Travel, TRV, 2013-10-25 00:00:00.000, 2222, asasasasd, true), Expense(553fb072dca952b19a08df62ff0006da, 1-9188136408fb811d4ac3ebf265eed618, Instance of 'ExpenseType': Travel, TRV, 2013-10-10 00:00:00.000, 99, jhghjg, false), Expense(cb79a73fe1c504ee847e60801e00733f, 7-2e3e66be911b1178bea1c8639166e64d, Instance of 'ExpenseType': Hotel, HT, 2013-10-02 00:00:00.000, 333, oko, false)]
+2013-10-15 18:10:24.439	couchdb.log	[INFO]:	========================
+
+2013-10-15 18:10:24.456	couchdb.log	[INFO]:	creatingDb
+2013-10-15 18:10:24.456	couchdb.log	[INFO]:	existDB
+2013-10-15 18:10:24.457	couchdb.log	[INFO]:	_getData GET: /_all_dbs GET null
+2013-10-15 18:10:24.504	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 18:10:24.539	couchdb.log	[INFO]:	>>existDB<1> ["db","_users","expensedb"]
+
+2013-10-15 18:10:24.542	couchdb.log	[INFO]:	_tryCreateDb exist: true
+2013-10-15 18:10:35.245	httpserver.log	[INFO]:	========================
+
+2013-10-15 18:10:35.248	httpserver.log	[INFO]:	LoadDataHandler GET: /fetchAll
+2013-10-15 18:10:35.249	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler load
+2013-10-15 18:10:35.250	couchdb.log	[INFO]:	_getData GET: /expensedb/_all_docs?include_docs=true GET null
+2013-10-15 18:10:35.253	couchdb.log	[INFO]:	_writeData data: null
+2013-10-15 18:10:35.315	httpserver.log	[INFO]:	loaded entities: [Expense(1d1a636bdd03d0ec510d84d0890021a2, 3-b64cb3a6f8b01578b124027cfd7bbd02, Instance of 'ExpenseType': Hotel, HT, 2013-09-06 00:00:00.000, 2.0, kkk??, false), Expense(1d1a636bdd03d0ec510d84d0890029a1, 3-8f58e06d99caf4d87701e9060b9c9087, Instance of 'ExpenseType': Travel, TRV, 2013-09-12 00:00:00.000, 3.0, bnlkjkj, false), Expense(1d1a636bdd03d0ec510d84d089003e3c, 2-81f1d1dd03b2f002fbd8cf3cc01a1e88, Instance of 'ExpenseType': Hotel, HT, 2013-09-12 00:00:00.000, 2.0, kjzczx,,,,cv, false), Expense(1d1a636bdd03d0ec510d84d089004b80, 11-12b67b80da9ba0b1be161c7a25a13feb, Instance of 'ExpenseType': Travel, TRV, 2013-09-06 00:00:00.000, 88, adskjsdfhs, false), Expense(29e676c48a74b796aa088285500008ca, 2-221fd8d2f8361334abcc95c85732b17b, Instance of 'ExpenseType': Travel, TRV, 2013-10-24 00:00:00.000, 55, fsdfg, false), Expense(29e676c48a74b796aa08828550000f80, 1-4fd01490c0d44a8fd5392f5d5b0aaf31, Instance of 'ExpenseType': Books, BK, 2013-10-12 00:00:00.000, 44, xbxcvb, false), Expense(29e676c48a74b796aa088285500017bd, 1-46ca8ca54290ee986497b9c10d71fb1f, Instance of 'ExpenseType': Hotel, HT, 2013-10-03 00:00:00.000, 555, cvxcb, false), Expense(29e676c48a74b796aa0882855000243e, 1-0f0c0d76c03d85ee88368ff1c1239731, Instance of 'ExpenseType': Books, BK, 2013-10-30 00:00:00.000, 55, xxcvbx, false), Expense(29e676c48a74b796aa08828550003365, 1-6cb14d818b8e5ef04f7107cabdd07031, Instance of 'ExpenseType': Books, BK, 2013-10-10 00:00:00.000, 555, sdfsgdfg, false), Expense(29e676c48a74b796aa08828550003b5b, 1-a4b6434171cf8e4e3dc704a220cb0bda, Instance of 'ExpenseType': Hotel, HT, 2013-10-05 00:00:00.000, 55, dfsdf, false), Expense(553fb072dca952b19a08df62ff0003e0, 1-3a89239149eb0fd0d18fb2a74d5c886b, Instance of 'ExpenseType': Travel, TRV, 2013-10-25 00:00:00.000, 2222, asasasasd, true), Expense(553fb072dca952b19a08df62ff0006da, 1-9188136408fb811d4ac3ebf265eed618, Instance of 'ExpenseType': Travel, TRV, 2013-10-10 00:00:00.000, 99, jhghjg, false), Expense(cb79a73fe1c504ee847e60801e00733f, 7-2e3e66be911b1178bea1c8639166e64d, Instance of 'ExpenseType': Hotel, HT, 2013-10-02 00:00:00.000, 333, oko, false)]
+2013-10-15 18:10:42.817	httpserver.log	[INFO]:	LoadDataHandler GET: /update
+2013-10-15 18:10:42.818	httpserver.log	[INFO]:	CouchDbHttpReqHandler PUT: /update
+2013-10-15 18:10:42.819	httpserver.log	[INFO]:	CouchDbHttpReqHandler PUT: /update
+2013-10-15 18:10:42.819	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler update
+2013-10-15 18:10:42.823	httpserver.log	[INFO]:	CouchDbHttpReqHandler jsonString: {"id": "29e676c48a74b796aa088285500017bd","rev": "1-46ca8ca54290ee986497b9c10d71fb1f","expenseType": {"name": "Books", "code": "BK"},"date": "2013-10-03 00:00:00.000","amount": 555,"detail": "cvxcb","isClaimed": false}
+2013-10-15 18:10:42.827	couchdb.log	[INFO]:	>> update t: {"id": "29e676c48a74b796aa088285500017bd","rev": "1-46ca8ca54290ee986497b9c10d71fb1f","expenseType": {"name": "Books", "code": "BK"},"date": "2013-10-03 00:00:00.000","amount": 555,"detail": "cvxcb","isClaimed": false}
+2013-10-15 18:10:42.833	couchdb.log	[INFO]:	_getData PUT: /expensedb/29e676c48a74b796aa088285500017bd PUT {"expenseType":{"name":"Books","code":"BK"},"date":"2013-10-03 00:00:00.000","amount":555,"detail":"cvxcb","isClaimed":false,"_id":"29e676c48a74b796aa088285500017bd","_rev":"1-46ca8ca54290ee986497b9c10d71fb1f"}
+2013-10-15 18:10:42.839	couchdb.log	[INFO]:	_writeData data: {"expenseType":{"name":"Books","code":"BK"},"date":"2013-10-03 00:00:00.000","amount":555,"detail":"cvxcb","isClaimed":false,"_id":"29e676c48a74b796aa088285500017bd","_rev":"1-46ca8ca54290ee986497b9c10d71fb1f"}
+2013-10-15 18:10:42.877	couchdb.log	[INFO]:	==>> CouchDbDAO<1> update: json: {"ok":true,"id":"29e676c48a74b796aa088285500017bd","rev":"2-8e89e69067fbe6e3b4936657efc1932a"}
+
+2013-10-15 18:10:42.878	couchdb.log	[INFO]:	==>> CouchDbDAO<2> update: exp: {"id": "29e676c48a74b796aa088285500017bd","rev": "2-8e89e69067fbe6e3b4936657efc1932a","expenseType": {"name": "Books", "code": "BK"},"date": "2013-10-03 00:00:00.000","amount": 555,"detail": "cvxcb","isClaimed": false}
+2013-10-15 18:10:42.878	httpserver.log	[INFO]:	CouchDbHttpReqHandler _dao.update: Expense(29e676c48a74b796aa088285500017bd, 2-8e89e69067fbe6e3b4936657efc1932a, Instance of 'ExpenseType': Books, BK, 2013-10-03 00:00:00.000, 555, cvxcb, false)
+2013-10-15 18:10:52.046	httpserver.log	[INFO]:	LoadDataHandler GET: /update
+2013-10-15 18:10:52.047	httpserver.log	[INFO]:	CouchDbHttpReqHandler PUT: /update
+2013-10-15 18:10:52.047	httpserver.log	[INFO]:	CouchDbHttpReqHandler PUT: /update
+2013-10-15 18:10:52.048	httpserver.log	[INFO]:	>>>> CouchDbHttpReqHandler update
+2013-10-15 18:10:52.049	httpserver.log	[INFO]:	CouchDbHttpReqHandler jsonString: {"id": "29e676c48a74b796aa088285500008ca","rev": "2-221fd8d2f8361334abcc95c85732b17b","expenseType": {"name": "Travel", "code": "TRV"},"date": "2013-10-24 00:00:00.000","amount": 550,"detail": "fsdfg","isClaimed": false}
+2013-10-15 18:10:52.051	couchdb.log	[INFO]:	>> update t: {"id": "29e676c48a74b796aa088285500008ca","rev": "2-221fd8d2f8361334abcc95c85732b17b","expenseType": {"name": "Travel", "code": "TRV"},"date": "2013-10-24 00:00:00.000","amount": 550,"detail": "fsdfg","isClaimed": false}
+2013-10-15 18:10:52.053	couchdb.log	[INFO]:	_getData PUT: /expensedb/29e676c48a74b796aa088285500008ca PUT {"expenseType":{"name":"Travel","code":"TRV"},"date":"2013-10-24 00:00:00.000","amount":550,"detail":"fsdfg","isClaimed":false,"_id":"29e676c48a74b796aa088285500008ca","_rev":"2-221fd8d2f8361334abcc95c85732b17b"}
+2013-10-15 18:10:52.055	couchdb.log	[INFO]:	_writeData data: {"expenseType":{"name":"Travel","code":"TRV"},"date":"2013-10-24 00:00:00.000","amount":550,"detail":"fsdfg","isClaimed":false,"_id":"29e676c48a74b796aa088285500008ca","_rev":"2-221fd8d2f8361334abcc95c85732b17b"}
+2013-10-15 18:10:52.061	couchdb.log	[INFO]:	==>> CouchDbDAO<1> update: json: {"ok":true,"id":"29e676c48a74b796aa088285500008ca","rev":"3-554e5b6d53d1b57fad96dba0107b69ad"}
+
+2013-10-15 18:10:52.072	couchdb.log	[INFO]:	==>> CouchDbDAO<2> update: exp: {"id": "29e676c48a74b796aa088285500008ca","rev": "3-554e5b6d53d1b57fad96dba0107b69ad","expenseType": {"name": "Travel", "code": "TRV"},"date": "2013-10-24 00:00:00.000","amount": 550,"detail": "fsdfg","isClaimed": false}
+2013-10-15 18:10:52.072	httpserver.log	[INFO]:	CouchDbHttpReqHandler _dao.update: Expense(29e676c48a74b796aa088285500008ca, 3-554e5b6d53d1b57fad96dba0107b69ad, Instance of 'ExpenseType': Travel, TRV, 2013-10-24 00:00:00.000, 550, fsdfg, false)
