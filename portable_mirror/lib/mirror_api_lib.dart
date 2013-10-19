@@ -17,9 +17,18 @@ class ClassMirrorFactory {
   static CMirrorFun _cmf;
   
   static Type getType(Object e) => (e == null)?null:e.runtimeType;
-  static IClassMirror reflectClass(Type type) => _cmf(type); // this should not be used.. [TODO]
+  static IClassMirror reflectClass(Type type) {
+    
+    return _cmf(type); // this should not be used.. [TODO]
+  }
 
-  static IInstanceMirror reflect(Object e) => reflectClassFromObject(e).reflect(e);
+  static IInstanceMirror reflect(Object e) {
+    IClassMirror imirror = reflectClassFromObject(e);
+    if (imirror == null) {
+      print('>>> error:  ${e.runtimeType} ');
+    }
+    return imirror.reflect(e);
+  }
   static IClassMirror reflectClassFromObject(Object e) => (e == null)?null:reflectClass(e.runtimeType); // this should be changed.. IInstance
 //  static IClassMirror reflectClassFromObject(Object e) => (e == null)?null:reflect(e).cmirror;
 
@@ -45,6 +54,7 @@ abstract class IClassMirror {
   Type get type;
   Map<Symbol, IFieldType> get fieldTypes;
   List<IClassMirror> get typeArguments;
+  List<IInstanceMirror> get metadata;
 }
 
 abstract class IFieldType {
@@ -78,8 +88,12 @@ Object getAnnotation(List metadata, bool cond(Object obj)) {
   for (Object obj in metadata) {
     if (obj is IInstanceMirror) {
       IInstanceMirror imirr = obj;
+      //print(">>0 getAnnotation annot type: ${imirr.reflectee.runtimeType}");
       if (cond(imirr.reflectee)) {
+        //print(">>1 getAnnotation annot obj: ${imirr.reflectee}");
         return imirr.reflectee;
+      } else {
+        //print(">>2 getAnnotation annot obj: ${imirr.reflectee}");
       }
     }
   }

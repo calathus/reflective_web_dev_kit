@@ -16,16 +16,18 @@ class FieldInfo implements IFieldType {
   final Symbol _symbol;
   String _name;
   final Type _type;
+  final List<Object> _metadata_objs;
   List<IInstanceMirror> _metadata;
   IClassMirror _cmirror;
   
   final Getter getter;
   final Setter setter;
   
-  FieldInfo(this._symbol, this._type, this.getter, this.setter, [List<Object> metadata = const[]]) {
+  FieldInfo(this._symbol, this._type, this.getter, this.setter, [List<Object> this._metadata_objs = const[]]) {
     _name = getSymbolName(_symbol);
-    _cmirror = ClassMirrorFactory.reflectClass(_type);
-    _metadata = metadata.fold([], (list, obj)=>list..add(new StaticInstanceMirror(ClassMirrorFactory.reflectClassFromObject(obj), obj)));
+    print(">> FieldInfo, _symbol: ${_symbol} _type: ${_type}");
+    //_cmirror = ClassMirrorFactory.reflectClass(_type);
+    //_metadata = metadata.fold([], (list, obj)=>list..add(new StaticInstanceMirror(ClassMirrorFactory.reflectClassFromObject(obj), obj)));
   }
   
   Symbol get symbol => _symbol;
@@ -33,8 +35,18 @@ class FieldInfo implements IFieldType {
   Type get type => _type;
   bool get priv => _name.startsWith("_");
   
-  List<IInstanceMirror> get metadata => _metadata;
-  IClassMirror get cmirror => _cmirror;
+  List<IInstanceMirror> get metadata {
+    if (_metadata == null) {
+      _metadata = _metadata_objs.fold([], (list, obj)=>list..add(new StaticInstanceMirror(ClassMirrorFactory.reflectClassFromObject(obj), obj)));
+    }
+    return _metadata;
+  }
+  IClassMirror get cmirror {
+    if (_cmirror == null) {
+      _cmirror = ClassMirrorFactory.reflectClass(_type);
+    }
+    return _cmirror;
+  }
 }
 
 typedef Object DefaultConstructor();
@@ -44,8 +56,9 @@ class StaticClassMirror implements IClassMirror {
   final DefaultConstructor ctor;
   final Map<Symbol, FieldInfo> fieldInfos;
   final List<IClassMirror> _typeArguments;
+  final List<IInstanceMirror> _metadata;
   
-  StaticClassMirror(this._type, this.ctor, this.fieldInfos, [this._typeArguments]);
+  StaticClassMirror(this._type, this.ctor, this.fieldInfos, [this._typeArguments = const[], this._metadata = const[]]);
   
   Type get type => _type;
   
@@ -55,7 +68,10 @@ class StaticClassMirror implements IClassMirror {
 
   Map<Symbol, IFieldType> get fieldTypes => fieldInfos;
   
-  List<IClassMirror> get typeArguments =>(_typeArguments == null)?const[]:_typeArguments;
+  List<IClassMirror> get typeArguments =>_typeArguments;
+  
+  List<IInstanceMirror> get metadata => _metadata;
+
 }
 
 //
@@ -105,6 +121,8 @@ class StaticField implements IField {
   
   StaticClassMirror get _cmirror => (_parent._cmirror as StaticClassMirror);
  }
+
+typedef dynamic DefaultConstroctorFun();
 
 //
 // utils

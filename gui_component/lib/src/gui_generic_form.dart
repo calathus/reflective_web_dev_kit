@@ -7,22 +7,29 @@ part of gui_component_lib;
 class Form<E> extends Component {
   static const String TABLE = "g_table";
   
-  final InputFactoryCache inputFactoryCache;
+  // temp
+  bool get introspection => false; 
   
-  final List<Symbol> _symbols = [];
-  final Map<Symbol, InputComp> inputComps = {};
+  InputFactoryCache inputFactoryCache = new InputFactoryCache();
   
-  final Type modelType;
-  IClassMirror cmirror;
+  List<Symbol> _symbols;
+  Map<Symbol, InputComp> _inputComps;
+  
+  Type modelType; // model shoudl be initialized from this's type info! //[TODO]
+  
+  IClassMirror _cmirror;
   
   E _e = null;  
   
+  /*
   Form(Component parent, this.modelType, 
     {
       Map<String, String> adhocCompMap, 
       Map<Type, InputCompFactory> specialInputCompMap,
       List<String> classes: const [TABLE]
-    }): super(parent, classes), inputFactoryCache = new InputFactoryCache(adhocCompMap, specialInputCompMap) {
+    }): inputFactoryCache = new InputFactoryCache(adhocCompMap, specialInputCompMap) {
+    if (parent != null) this.parent = parent;
+    if (classes != null) this.classes.addAll(classes);
     //
     cmirror = ClassMirrorFactory.reflectClass(modelType);
     cmirror.fieldTypes.forEach((_, IFieldType ft){
@@ -36,7 +43,67 @@ class Form<E> extends Component {
       inputComps[ft.symbol] = inputComp;
     });
   }
+  */
   
+  Form() {
+    classes.add(TABLE);
+    // modelType = reflectType(this).typeParams[0];
+  }
+  List<Symbol> get symbols {
+    if (_symbols == null) {
+      _symbols = [];
+      cmirror.fieldTypes.forEach((_, IFieldType ft){
+        if (ft.priv) return;
+        _symbols.add(ft.symbol);
+      });
+    }
+    return _symbols;
+  }
+  
+  IClassMirror get cmirror {
+    if (modelType == null) {
+      throw new Exception(">> error _initCmirror: _modelType is not initialized.");
+    }
+    if (_cmirror == null) {
+      _cmirror = ClassMirrorFactory.reflectClass(modelType);
+    }
+    return _cmirror;
+  }
+  /*
+  // [temp]
+  void _initCmirror() {
+    cmirror.fieldTypes.forEach((_, IFieldType ft){
+      if (ft.priv) return;
+      GUI_Form form_anno = getAnnotation(ft.metadata, (obj)=>obj is GUI_Form);
+      if (inputFactoryCache != null) {
+        InputComp inputComp = inputFactoryCache.getInputComp(this, ft.name, ft.type);
+        if (form_anno != null) {
+          inputComp.options = form_anno;
+        }
+        _inputComps[ft.symbol] = inputComp;
+      }
+    });
+  }
+  */
+  // [temp]
+  Map<Symbol, InputComp> get inputComps {
+    if (_inputComps == null) {
+      _inputComps = {};
+      cmirror.fieldTypes.forEach((_, IFieldType ft){
+        if (ft.priv) return;
+        GUI_Form form_anno = getAnnotation(ft.metadata, (obj)=>obj is GUI_Form);
+        if (inputFactoryCache != null) {
+          InputComp inputComp = inputFactoryCache.getInputComp(this, ft.name, ft.type);
+          if (form_anno != null) {
+            inputComp.options = form_anno;
+          }
+          _inputComps[ft.symbol] = inputComp;
+        }
+      });
+    }
+    return _inputComps;
+  }
+
   E get e=>_e;
 
   E create() => _init(cmirror.newInstance().reflectee);
@@ -44,7 +111,7 @@ class Form<E> extends Component {
   void load(E e) {
     this._e = e;
     IInstanceMirror imirr = cmirror.reflect(e);
-    _symbols.forEach((Symbol symbol){
+    symbols.forEach((Symbol symbol){
       inputComps[symbol].value = imirr.getField(symbol).value;
     });
    }
@@ -57,7 +124,7 @@ class Form<E> extends Component {
     }
     Map<Symbol, Object> vals = {};
     try {
-      _symbols.forEach((Symbol symbol){
+      symbols.forEach((Symbol symbol){
         vals[symbol] = inputComps[symbol].value;
       });
     } catch (e) {
@@ -101,7 +168,7 @@ class Form<E> extends Component {
   Element update() => addSubComponents0(initElem());
       
   Element addSubComponents0(Element elm) => addListeners(
-      _symbols.fold(elm, (Element eml0, Symbol symbol)=>
+      symbols.fold(elm, (Element eml0, Symbol symbol)=>
           elm
             ..nodes.add(inputComps[symbol].element)
             ..nodes.add(newElem("br")))

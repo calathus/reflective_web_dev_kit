@@ -6,6 +6,7 @@ library sample_generic_gui;
 
 import 'dart:html';
 
+import "package:gui_component/gui_annotation.dart";
 import "package:gui_component/gui_component_lib.dart";
 import "package:couchdb/client/couchdb_client.dart";
 
@@ -21,6 +22,6 @@ main() {
   initClassMirrorFactory();
   
   Element uiContainer = document.query("#sample_generic_gui");
-  CRUDView app = new CRUDView(null);
+  CRUDView app = new CRUDView();
   uiContainer.nodes.add(app.element); // this 'element' tiggers DOM node creation!
 }

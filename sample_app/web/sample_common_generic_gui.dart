@@ -5,42 +5,75 @@
 part of sample_generic_gui;
 
 class CRUDView extends Component {
-  static const String APP = "g_app_ctlr";
-//  final DivElement _uiRoot;
+  static const String CRUD = "g_cud_view";
   DivElement _content;
   DivElement _actions;
+
+  @UI_Table()
+  final Table<Expense> table = new Table<Expense>();
   
-  Table<Expense> table;
-  Form<Expense> form;
-  ButtonComp loadButtom;
-  ButtonComp newButtom;
-  ButtonComp saveButtom;
-  ButtonComp deleteButtom;
+  @UI_Form()
+  final Form<Expense> form = new Form<Expense>();
+ 
+  @UI_Button(label: "Load")
+  final ButtonComp loadButtom = new ButtonComp();
+  
+  @UI_Button(label: "New")
+  final ButtonComp newButtom = new ButtonComp();
+  
+  @UI_Button(label: "Save")
+  final ButtonComp saveButtom = new ButtonComp();
+  
+  @UI_Button(label: "Delete")
+  final ButtonComp deleteButtom = new ButtonComp();
+  
+  Element _updateElement(Element elm) => 
+      elm
+      ..classes.add("section")
+      ..nodes.add(new Element.html("<header class='section'>${table.modelType} Table</header>"))
+      ..nodes.add(_content = new Element.tag("div")
+        ..classes.add("g_crud_view_table")
+        ..nodes.add(table.element))
+      ..nodes.add(_actions = new Element.tag("div")
+        ..id = "actions"
+        ..classes.add("section")
+        ..nodes.add(loadButtom.element)
+        ..nodes.add(newButtom.element)
+        ..nodes.add(saveButtom.element)
+        ..nodes.add(deleteButtom.element))
+      ..nodes.add(form.element)
+      ..nodes.add(new Element.html("<footer class='section' id='footer'></footer>"));
+  
   
   // this should be injected by AOP approach from out side..
   ICouchDbClientDAO<Expense> dao = new CouchDbClientDAO<Expense>(Expense, sampleJsonMapper);
   
-  CRUDView(Component parent): super(parent, const[APP]) {
-    table = new Table<Expense>.fromModelType(this, Expense, formatFunctionMap: {ExpenseType: ExpenseTypeComp.format});
-    form = new Form<Expense>(this, Expense, 
-        specialInputCompMap: {ExpenseType: ExpenseTypeComp.inputCompFactory},
-        adhocCompMap: {'detail': 'textarea'} 
-    );
-
-    loadButtom = new ButtonComp(this, "Load", (_) {
+  CRUDView() {
+    this.classes.add(CRUD);
+    Type _Expense = Expense;
+    table
+      ..modelType = _Expense
+      ..formatFunctionMap[ExpenseType] = ExpenseTypeComp.format;
+    
+    form
+      ..modelType = _Expense
+      ..inputFactoryCache.specialInputCompMap[ExpenseType] = ExpenseTypeComp.inputCompFactory
+      ..inputFactoryCache.adhocCompMap['detail'] = 'textarea'; // should be moved to annottaion!
+    
+    loadButtom.onClick((_) {
       dao.fetchAll().then((List<Expense> es){
         table.load(es);
-        print('loaded data from db; ${es}');
+        //print('loaded data from db; ${es}');
       });
     });
     
-    newButtom = new ButtonComp(this, "New", (_) {
+    newButtom.onClick((_) {
       Expense e = form.create();
       _changeButtonState(true, false, true);
       //print('new in db');
     });
     
-    saveButtom = new ButtonComp(this, "Save", (_) {
+    saveButtom.onClick((_) {
       if (form.e != null) {
         Expense e = form.save();
         if (e == null) {
@@ -61,7 +94,7 @@ class CRUDView extends Component {
       }
     });
     
-    deleteButtom = new ButtonComp(this, "Delete", (_) {
+    deleteButtom.onClick((_) {
       Expense e = form.e;
       if (e != null) {
         dao.delete(e).then((ok){
@@ -74,7 +107,6 @@ class CRUDView extends Component {
         });
       }
     });
-    
     _changeButtonState(false, true, true);
     
     table.row_listeners.add((ev, row){
@@ -82,8 +114,6 @@ class CRUDView extends Component {
       form.load(e);
       _changeButtonState(false, false, false);
     });
-    
-//    _uiRoot.nodes.add(element); // this 'element' tiggers DOM node creation!
   }
   
   void _changeButtonState(bool new_disable, bool save_disable, bool delete_disable) {
@@ -96,22 +126,7 @@ class CRUDView extends Component {
   
   Element update() => addSubComponents0(initElem());
       
-  Element addSubComponents0(Element elm) => addListeners(
-      elm
-      ..classes.add("section")
-      ..nodes.add(new Element.html("<header class='section'>${table.modelType} Table</header>"))
-      ..nodes.add(_content = new Element.tag("div")
-        ..classes.add("g_crud_view_table")
-        ..nodes.add(table.element))
-      ..nodes.add(_actions = new Element.tag("div")
-        ..id = "actions"
-        ..classes.add("section")
-        ..nodes.add(loadButtom.element)
-        ..nodes.add(newButtom.element)
-        ..nodes.add(saveButtom.element)
-        ..nodes.add(deleteButtom.element))
-      ..nodes.add(form.element)
-      ..nodes.add(new Element.html("<footer class='section' id='footer'></footer>")));
+  Element addSubComponents0(Element elm) => addListeners(_updateElement(elm));
 }
 
 class ExpenseTypeComp extends SelectComp<ExpenseType> {
@@ -123,8 +138,12 @@ class ExpenseTypeComp extends SelectComp<ExpenseType> {
     "HT": const ExpenseType("Hotel","HT")                          
   };
   
-  ExpenseTypeComp(Component parent, String label, {List<String> classes: const [SelectComp.SELECT_INPUT, EXPENSE_TYPE_INPUT]})
-    : super(parent, label, ExpenseType, classes: classes);
+  ExpenseTypeComp(Component parent, String label, {List<String> classes: const [SelectComp.SELECT_INPUT, EXPENSE_TYPE_INPUT]}) {
+    this.classes.add(EXPENSE_TYPE_INPUT);
+    this.parent = parent;
+    //this.type = ExpenseType;
+    if (classes != null) this.classes.addAll(classes);
+  }
   
   static ExpenseTypeComp inputCompFactory(Component c, String name, Type t)=>new ExpenseTypeComp(c, name);
   static String format(ExpenseType et) => (et == null)?'':et.name;

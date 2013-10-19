@@ -26,6 +26,7 @@ class DynamicClassMirror implements IClassMirror {
   final ClassMirror _cmirror;
   MethodMirror _ctor;
   Map<Symbol, IFieldType> _fieldTypes;
+  List<IInstanceMirror> _metadata;
   
   DynamicClassMirror(this._type, this._cmirror);
   
@@ -77,8 +78,9 @@ class DynamicClassMirror implements IClassMirror {
       _cmirror.members.forEach((Symbol symbol, Mirror md){
         if (md is VariableMirror) {
           VariableMirror vm = md;
-          print('>>>>fieldTypes ${symbol} ${vm.simpleName}');
-          if (!vm.isFinal && !vm.isStatic) {
+          //print('>>>>1 fieldTypes ${symbol} ${vm.simpleName}');
+          if (!vm.isStatic) {
+            //print('>>>>2 fieldTypes ${symbol} ${vm.simpleName}');
             _fieldTypes[symbol] = new DynamicFieldType(symbol, vm);
           }
         }
@@ -95,6 +97,14 @@ class DynamicClassMirror implements IClassMirror {
   }
   
   List<IClassMirror> get typeArguments => _cmirror.typeArguments.fold([], (list, ClassMirror cmirr)=>list..add(new DynamicClassMirror.fromClassMirror(cmirr)));
+  
+  List<IInstanceMirror> get metadata {
+    if (_metadata == null) {
+      _metadata = _cmirror.metadata.fold([], (list, InstanceMirror imirror)=>list..add(new DynamicInstanceMirror.fromInstanceMirror(imirror)));
+    }
+    return _metadata;
+  }
+
 }
 
 class DynamicFieldType implements IFieldType {

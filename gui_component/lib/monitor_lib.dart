@@ -2,10 +2,10 @@
  * author: N, calathus
  * date: 10/12/2013
  */
-library receptor_lib;
+library monitor_lib;
 
 import 'package:portable_mirror/mirror_api_lib.dart';
-import "package:portable_mirror/mirror_dynamic_lib.dart";
+//import "package:portable_mirror/mirror_dynamic_lib.dart";
 
 typedef Object GetListener(Object target, Object old_value);
 typedef void SetListener(Object target, Object old_value, Object new_value);
@@ -46,12 +46,12 @@ class FieldState {
   void set(Object value) {
     Object old_value = field.value;
     field.value = value;
-    print('>>>1 FieldState.set: v: ${value}');
+    //print('>>>1 FieldState.set: v: ${value}');
     StaticReceptorListener.set(parent, field.symbol, old_value, value);
-    print('>>>2 FieldState.set: old_v: ${old_value} v: ${value} ${setListeners.length}');
+    //print('>>>2 FieldState.set: old_v: ${old_value} v: ${value} ${setListeners.length}');
     for (SetListener setlistner in setListeners) {
       setlistner(parent, old_value, value);
-      print('>>>3 FieldState.set: old_v: ${old_value} v: ${value}');
+      //print('>>>3 FieldState.set: old_v: ${old_value} v: ${value}');
     }
   }
 }
@@ -170,7 +170,7 @@ class Monitor {
   
   // in order to use for Mixin, a constructor must not be defined.
   /*
-  Receptor() {
+  Monitor() {
     _type = this.runtimeType;
     init();
   }
@@ -191,24 +191,31 @@ class Monitor {
     // a getter associated with Monitored private filed with "_"+gettername will be handled.
     imirror.cmirror.fieldTypes.forEach((Symbol symbol, IFieldType ft) {
       Symbol monitoredField = monitoredFields[symbol];
-      print('>>_init ${symbol} ${monitoredField}');
+      //print('>>_init ${symbol} ${monitoredField}');
       if (monitoredField != null) {
         _fields[symbol] = new FieldState(this, imirror.getField(monitoredField));
       }
     });
   }
   
-  Map<Symbol, Symbol> getMonitoredFields(IInstanceMirror imirror) {
+  static Map<Symbol, Symbol> getMonitoredFields(IInstanceMirror imirror) {
     Map<Symbol, Symbol> monitoredFields = {};
     imirror.cmirror.fieldTypes.forEach((Symbol symbol, IFieldType ft){
       if (!ft.name.startsWith('_')) {
         return;
       }
-      //print('getMonitoredFields ${symbol} ${ft.name}');
-      Monitored mo = getAnnotation(ft.metadata, (Object obj)=>obj is Monitored);
+      String pubName = ft.name.substring(1);
+      //print('getMonitoredFields ${pubName} ${ft.name} ${ft.metadata}');
+      //Monitored mo = getAnnotation(ft.metadata, (Object obj)=>obj is Monitored);
+      Monitored mo = getAnnotation(ft.metadata, (Object obj){
+        //print(">>>>> ${obj}, ${obj.runtimeType}, ${obj is Monitored}");
+        return obj is Monitored;
+      });
       if (mo != null) {
-          monitoredFields[new Symbol(ft.name.substring(1))] = symbol;
-          print('!getMonitoredFields ${ft.name.substring(1)} ${symbol}');
+          monitoredFields[new Symbol(pubName)] = symbol;
+          //print('!getMonitoredFields ${pubName} ${symbol}');
+      } else {
+          //print('??getMonitoredFields ${pubName} ${symbol}');
       }
     });
     return monitoredFields;
@@ -224,14 +231,14 @@ class Monitor {
   }
   
   void set(Symbol symbol, Object value) {
-    print('>>>1 set: symbol: ${symbol}, v: ${value}');
+    //print('>>>1 set: symbol: ${symbol}, v: ${value}');
     _init();
-    print('>>>2 set: symbol: ${symbol}, v: ${value}');
+    //print('>>>2 set: symbol: ${symbol}, v: ${value}');
     FieldState fstate = _fields[symbol];
     if (fstate == null) {
       throw new Exception("setter, no field ${symbol} fror ${type}");
     }
-    print('>>>3 set: symbol: ${symbol}, v: ${value}');
+    //print('>>>3 set: symbol: ${symbol}, v: ${value}');
     fstate.set(value);
   }
   
@@ -248,7 +255,7 @@ class Monitor {
     _init();
     FieldState fstate = _fields[symbol];
     if (fstate == null) {
-      throw new Exception("addGetListener, no field ${symbol} fror ${type}");
+      throw new Exception("_getFieldState, no field ${symbol} for ${type}");
     }
     return fstate;
   }
@@ -266,6 +273,7 @@ class Monitored {
   const Monitored({this.getterName});
 }
 
+/*
 //
 // test
 //
@@ -338,5 +346,4 @@ main() {
   test2();
   
 }
-
-
+*/

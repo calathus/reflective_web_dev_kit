@@ -15,7 +15,7 @@ main() {
   initClassMirrorFactory();
   
   Element uiContainer = document.query("#namebadge");
-  NameBadge app = new NameBadge(null);
+  NameBadge app = new NameBadge();
   uiContainer.nodes.add(app.element); // this 'element' tiggers DOM node creation!
 
 }

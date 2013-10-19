@@ -14,30 +14,61 @@ typedef String FormatFunction(Object value);
  * So table has read only access to entities.
  * In order to modify/create an entity, Form must be used.
  */
-class Table<E> extends Component {
+abstract class TableComponent extends Component {
+  bool get introspection => false; 
+}
+
+class Table<E> extends TableComponent {
   static const String TABLE = "g_table";
   static final Map<Type, FormatFunction> defaultFormatFunctionMap = {};
-  final Map<Type, FormatFunction> _formatFunctionMap;
+  Map<Type, FormatFunction> formatFunctionMap = {};
   
   Type modelType;
-  IClassMirror cmirror;
+  IClassMirror _cmirror;
   
-  TableHeader theader;
-  final List<Row<E>> rows;
+  TableHeader _theader;
+  final List<Row<E>> rows = [];
 
   final List<RowAction> row_listeners = []; 
   final List<RowCellAction> rcell_listeners = []; 
 
-  Table(Component parent, this.modelType, this._formatFunctionMap, {List<String>  classes: const [TABLE]}): 
-    super(parent, classes), rows = [] {
+  Table() {
+    classes.add(TABLE);
+  }
+  
+ /*
+  Table(Component parent, this.modelType, this._formatFunctionMap, {List<String>  classes: const [TABLE]}){
+    if (parent != null) this.parent = parent;
+    if (classes != null) this.classes.addAll(classes);
     cmirror = ClassMirrorFactory.reflectClass(modelType);                                                                                                                                      ;
   }
   
   factory Table.fromModelType(Component parent, Type modelType, {Map<Type, FormatFunction> formatFunctionMap: const {}}) =>
     [new Table(parent, modelType, formatFunctionMap)].fold(null, (p, tbl)=>tbl..theader = new TableHeader.fromType(tbl, modelType)); 
+  */
+  
+  IClassMirror get cmirror {
+    if (_cmirror == null) {
+      if (modelType == null) {
+        throw new Exception("Table modelType is not set!");
+      }
+      _cmirror = ClassMirrorFactory.reflectClass(modelType);
+    }
+    return _cmirror;
+  }
+  
+  TableHeader get theader {
+    if (_theader == null) {
+      if (modelType == null) {
+        throw new Exception("Table modelType is not set!");
+      }
+      _theader = new TableHeader.fromType(this, modelType);
+    }
+    return _theader;
+  }
   
   String valueToString(Object v, Type type) {
-    FormatFunction fn = _formatFunctionMap[type];
+    FormatFunction fn = formatFunctionMap[type];
     if (fn != null) {
       return fn(v);
     }
@@ -103,12 +134,15 @@ class Table<E> extends Component {
   TableElement update() => addSubComponents(rows, initElem()..nodes.add(updateComponent(theader)), updateComponent);
 }
 
-class TableHeader<E> extends Component {
+class TableHeader<E> extends TableComponent {
   static const String TH = "g_th";
   final Table<E> table;
   final List<HeaderCell> headerCells;
   
-  TableHeader(Table parent, this.headerCells, {List<String> classes: const [TH]}): super(parent, classes), table = parent;
+  TableHeader(Table parent, this.headerCells, {List<String> classes: const [TH]}): table = parent {
+    if (parent != null) this.parent = parent;
+    if (classes != null) this.classes.addAll(classes);
+  }
   
   factory TableHeader.fromType(Table parent, Type modelType) {
     var th = new TableHeader(parent, []);
@@ -128,7 +162,7 @@ class TableHeader<E> extends Component {
   Element update() => addSubComponents(headerCells, initElem(), updateComponent);
 }
 
-class HeaderCell extends Component {
+class HeaderCell extends TableComponent {
   static const String HCELL = "g_hcell";
   TableHeader tableHeader;
   Symbol symbol;
@@ -138,7 +172,10 @@ class HeaderCell extends Component {
   String label;
   
   HeaderCell(TableHeader parent, this.symbol, this.type, this.label, {List<String> classes: const [HCELL]}):
-    super(parent, classes), this.tableHeader = parent;
+    this.tableHeader = parent {
+    if (parent != null) this.parent = parent;
+    if (classes != null) this.classes.addAll(classes);
+  }
   
   factory HeaderCell.fromSymbol(TableHeader tableHeader, Symbol symbol, Type type) =>
     new HeaderCell(tableHeader, symbol, type, getLabel(tableHeader,symbol));
@@ -162,7 +199,7 @@ class HeaderCell extends Component {
   Element addSubComponents0(Element elm) => addListeners(elm..text = label..classes.add(label));
 }
 
-class Row<E> extends Component {
+class Row<E> extends TableComponent {
   static const String TR = "g_tr";
   final Table<E> table;
   final E e;
@@ -171,7 +208,10 @@ class Row<E> extends Component {
   final List<RowCell> rowCells = [];
 
   Row(Table parent, E e0, {List<String> classes: const [TR]}): 
-    super(parent, classes), table = parent, e = e0, imirr = parent.cmirror.reflect(e0);
+    table = parent, e = e0, imirr = parent.cmirror.reflect(e0) {
+    if (parent != null) this.parent = parent;
+    if (classes != null) this.classes.addAll(classes);
+  }
     
   factory Row.defaultRow(Table<E> table) =>
     table.theader.headerCells.fold(new Row(table, null), 
@@ -190,12 +230,14 @@ class Row<E> extends Component {
   TableRowElement update() => addSubComponents(rowCells, initElem(), updateComponent);
 }
 
-class RowCell extends Component {
+class RowCell extends TableComponent {
   static const String RCELL = "g_rcell";
   final HeaderCell headerCell;
   IField field;
   
-  RowCell(Row parent, this.headerCell, {List<String> classes : const [RCELL]}): super(parent, classes) {
+  RowCell(Row parent, this.headerCell, {List<String> classes : const [RCELL]}) {
+    if (parent != null) this.parent = parent;
+    if (classes != null) this.classes.addAll(classes);
     field = row.imirr.getField(headerCell.symbol);
   }
   

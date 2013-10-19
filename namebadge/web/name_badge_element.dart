@@ -9,17 +9,44 @@ import 'dart:math';
 
 import "../../gui_component/lib/monitor_lib.dart";
 import "package:gui_component/gui_component_lib.dart";
+import "package:gui_component/gui_annotation.dart";
 
 class NameBadge extends Component with Monitor {
   static const String APP = "g_namebage";
-  TextInputComp textInput;
-  ButtonComp button;
-  RadioComp maleRadio;
-  RadioComp femaleRadio;
+
+  @UI_TextInput(label: "Enter New Name:", type: String)
+  final TextInputComp textInput = new TextInputComp();
+  
+  @UI_Button(label: "Generate pirate name")
+  final ButtonComp button = new ButtonComp();
+  
+  @UI_Radio(label: "Male", name: "maleOrFemale")
+  final RadioComp maleRadio = new RadioComp();
+  
+  @UI_Radio(label: "Female", name: "maleOrFemale")
+  final RadioComp femaleRadio = new RadioComp();
+  
+  Element _updateElement(Element elm) => 
+      elm
+        ..nodes.add(
+            new Element.div()
+              ..classes.add("entry")
+              ..nodes.add(textInput.element)
+              ..nodes.add(button.element)
+              ..nodes.add((maleRadio..checked = _male).element)
+              ..nodes.add((femaleRadio..checked = _female).element))
+        ..nodes.add(
+            new Element.div()
+              ..classes.add("outer")
+              ..nodes.add(new Element.div()..classes.add('boilerplate')..text = 'Hi! My name is')
+              ..nodes.add(_initDiv0(new Element.div()..classes.add('name')..text = _badgename)));
   
   Element _div0;
   Element _initDiv0(Element e) => _div0 = e;
 
+//
+  //
+  //
   @Monitored()
   String _badgename = 'Bob';
   @Monitored()
@@ -36,11 +63,18 @@ class NameBadge extends Component with Monitor {
   bool get female => get(const Symbol('female'));
   void set female(bool v) => set(const Symbol('female'), v);
   
-  NameBadge(Component parent): super(parent, const[APP]) {
+  NameBadge() {
+//    this.parent = parent;
+    this.classes.add(APP);
+    /*
     this.textInput = new TextInputComp(this, "Enter New Name:", String);
     this.button = new ButtonComp(this, "Generate pirate name", (e) { badgename = pirateName(); });
     this.maleRadio = new RadioComp(this, "Male", "male", _male, name:"maleOrFemale")..onClick((_, comp){ print('>> RadioComp male'); male = true; });
     this.femaleRadio = new RadioComp(this, "Female", "female", _female, name:"maleOrFemale")..onClick((_, comp){ print('>> RadioComp female'); female = true; });
+    */
+    this.button.onClick((e) { badgename = pirateName(); });
+    this.maleRadio.onClick((_, comp){ print('>> RadioComp male'); male = true; });
+    this.femaleRadio.onClick((_, comp){ print('>> RadioComp female'); female = true; });
     
     addSetListener(const Symbol("badgename"), (NameBadge target, String old_value, String new_value){
       textInput.value = new_value;
@@ -68,6 +102,7 @@ class NameBadge extends Component with Monitor {
       print('~~female type ${target} old_value ${old_value}');
     });
   }
+  
   String pirateName() {
     if (_female) {
       return new PirateName.female().name;
@@ -80,20 +115,7 @@ class NameBadge extends Component with Monitor {
   
   Element update() => addSubComponents0(initElem());
   
-  Element addSubComponents0(Element elm) => addListeners(
-      elm
-        ..nodes.add(
-            new Element.div()
-              ..classes.add("entry")
-              ..nodes.add(textInput.element)
-              ..nodes.add(button.element)
-              ..nodes.add(maleRadio.element)
-              ..nodes.add(femaleRadio.element))
-        ..nodes.add(
-            new Element.div()
-              ..classes.add("outer")
-              ..nodes.add(new Element.div()..classes.add('boilerplate')..text = 'Hi! My name is')
-              ..nodes.add(_initDiv0(new Element.div()..classes.add('name')..text = _badgename))));
+  Element addSubComponents0(Element elm) => addListeners(_updateElement(elm));
 }
 
 //library models;

@@ -9,10 +9,21 @@ typedef void MouseEventHandler(event);
 
 class ButtonComp extends Component {
   static const String TABLE = "g_button_c";
+  // temp
+  bool get introspection => false;
+
+  String name;
+  bool disabled;
+//  bool invisible;
   String label;
-  MouseEventHandler onClick;
-  
-  ButtonComp(Component parent, this.label, this.onClick, {List<String> classes: const [TABLE]}): super(parent, classes);
+  MouseEventHandler _onClick;
+
+  /*  
+  ButtonComp({Component parent, this.label, MouseEventHandler onClick, List<String> classes: const [TABLE]}): super(parent: parent, classes:classes){
+    _onClick = onClick;
+  }
+  */
+  void onClick(MouseEventHandler v) { _onClick = v;}
   
   ButtonElement get node => (element as ButtonElement);
   
@@ -24,9 +35,13 @@ class ButtonComp extends Component {
   Element update() => addSubComponents0(initElem());
       
   Element addSubComponents0(Element elm) => addListeners(
-      elm
+      (elm as ButtonElement)
+        ..nodes.add(newElem("label")..text = label)
+        // [TODO]
+//        ..attributes['name'] = name
         ..text = label
-        ..onClick.listen(onClick));
+        ..disabled = disabled
+        ..onClick.listen(_onClick));
 }
 
 //
@@ -34,14 +49,16 @@ class ButtonComp extends Component {
 //
 abstract class InputComp extends Component {
   String label;
-  Type type;
+//  Type type;
   String name;
   GUI_Form _form_anno;
   Symbol monitored;
   IField field;
-  
-  InputComp(Component parent, this.label, this.type, this.name, List<String> classes): super(parent, classes);
-  
+  // temp
+  bool get introspection => false;
+  /*
+  InputComp({Component parent, this.label, this.name, this.disabled, this.invisible, List<String> classes}): super(parent: parent, classes:classes);
+  */
   Object get value;
   void set value(Object v);
   
@@ -74,16 +91,21 @@ abstract class InputComp extends Component {
   Element addSubComponents0(Element elm) => addListeners(
       elm
         ..nodes.add(newElem("label")..text = label)
-        ..nodes.add((name != null)?(inputElem..attributes['name'] = name):inputElem));
+        ..nodes.add(
+            ((name != null)?(inputElem..attributes['name'] = name):inputElem)));
 }
 
 class TextInputComp extends InputComp {
   static const String TEXT_INPUT = "g_text_input";
+  Type type;
   
   InputElement _inputElem;
-  
-  TextInputComp(Component parent, String label, Type type, {String name, List<String> classes: const [TEXT_INPUT]}): super(parent, label, type, name, classes);
-  
+  /*
+  TextInputComp({Type this.type, Component parent, String label, String name, List<String> classes: const [TEXT_INPUT]}): super(parent: parent, label: label, name: name, classes: classes);
+  */
+  TextInputComp() {
+    this.classes.add(TEXT_INPUT);
+  }
   Object get value => stringToObject(_inputElem.value, type);
   
   void set value(Object v) {
@@ -110,9 +132,10 @@ class TextAreaComp extends InputComp {
   static const String TEXTAREA_INPUT = "g_textarea_input";
   
   TextAreaElement _inputElem;
-  
-  TextAreaComp(Component parent, String label, {String name, List<String> classes: const [TEXTAREA_INPUT]}): super(parent, label, String, name, classes);
 
+  TextAreaComp() {
+    this.classes.add(TEXTAREA_INPUT);
+  }
   Object get value => _inputElem.value;
   
   void set value(Object v) {
@@ -136,9 +159,11 @@ class CheckboxComp extends InputComp {
   static const String CHECKBOX_INPUT = "g_checkbox_input";
   
   InputElement _inputElem;
-  
-  CheckboxComp(Component parent, String label, {String name, List<String> classes: const [CHECKBOX_INPUT]}): super(parent, label, bool, name, classes);
-  
+  bool checked;
+
+  CheckboxComp() {
+    this.classes.add(CHECKBOX_INPUT);
+  }
   Object get value => _inputElem.checked;
   
   void set value(bool v) {
@@ -162,12 +187,15 @@ class CheckboxComp extends InputComp {
 class RadioComp extends InputComp {
   static const String RADIO_INPUT = "g_radio_input";
   
-  final String init_v;
-  final bool checked;
+  //String init_v;
+  bool checked;
   InputElement _inputElem;
-  
-  RadioComp(Component parent, String label, this.init_v, this.checked, {String name, List<String> classes: const [RADIO_INPUT]}): super(parent, label, String, name, classes);
-  
+  /*
+  RadioComp({Component parent, String label, this.init_v, this.checked, String name, List<String> classes: const [RADIO_INPUT]}): super(parent: parent, label: label, name: name, classes: classes);
+  */
+  RadioComp() {
+    this.classes.add(RADIO_INPUT);
+  }
   Object get value => _inputElem.value;
   
   void set value(String v) {
@@ -178,7 +206,7 @@ class RadioComp extends InputComp {
     if (_inputElem == null) {
       _inputElem = (newElem("input") as InputElement)
         ..type = "radio"
-        ..value = init_v
+        //..value = init_v
         ..checked = checked
       ;
     }
@@ -196,13 +224,18 @@ abstract class SelectComp<T> extends InputComp {
   static const String SELECT_INPUT = "g_select_input";
   
   List<T> _expenseTypeList;
+  int selectedIndex;
   
   SelectElement _selectElem;
-  
-  SelectComp(Component parent, String label, Type type, {String name, List<String> classes: const [SELECT_INPUT]}): super(parent, label, type, name, classes) {
+  /*
+  SelectComp({Component parent, String label, Type type, String name, List<String> classes: const [SELECT_INPUT]}): super(parent: parent, label: label, name: name, classes: classes) {
     _expenseTypeList = entityTypes.values.toList();
   }
-  
+  */
+  SelectComp() {
+    this.classes.add(SELECT_INPUT);
+    _expenseTypeList = entityTypes.values.toList();
+  }
   Map<String, T> get entityTypes;
   
   Object get value {
@@ -255,20 +288,24 @@ typedef InputComp InputCompFactory(Component comp, String name, Type t);
 
 class InputFactoryCache {
   static final Map<String, InputCompFactory> predefinedInputCompMap = {
-    'textarea': (Component comp, String name, Type t)=>new TextAreaComp(comp, name)
+//    'textarea': (Component comp, String name, Type t)=>new TextAreaComp(parent: comp, name: name)
+       'textarea': (Component comp, String name, Type t)=>new TextAreaComp()..parent = comp..name = name
   };
   static final Map<Type, InputCompFactory> defaultSpecialInputCompMap = {
-    bool: (Component comp, String name, Type t)=>new CheckboxComp(comp, name)
+//    bool: (Component comp, String name, Type t)=>new CheckboxComp(parent: comp, name: name)
+    bool: (Component comp, String name, Type t)=>new CheckboxComp()..parent = comp..name = name
   };
   
-  Map<String, String> _adhocCompMap;
-  Map<Type, InputCompFactory> _specialInputCompMap;
-  
-  InputFactoryCache(this._adhocCompMap, this._specialInputCompMap);
+  Map<String, String> adhocCompMap = {};
+  Map<Type, InputCompFactory> specialInputCompMap = {};
+/*  
+  InputFactoryCache(this.adhocCompMap, this.specialInputCompMap);
+  */
+  InputFactoryCache();
   
   InputComp getInputComp(Component c, String name, Type t) {
     InputCompFactory inputfact = null;
-    String key = _adhocCompMap[name];
+    String key = adhocCompMap[name];
     
     if (key != null) {
       inputfact = predefinedInputCompMap[key];
@@ -276,7 +313,7 @@ class InputFactoryCache {
         return inputfact(c, name, t);
       }
     }
-    inputfact = _specialInputCompMap[t];
+    inputfact = specialInputCompMap[t];
     if (inputfact != null) {
       return inputfact(c, name, t);
     }
@@ -284,7 +321,8 @@ class InputFactoryCache {
     if (inputfact != null) {
       return inputfact(c, name, t);
     }
-    return new TextInputComp(c, name, t);
+//    return new TextInputComp(parent: c, name: name, type: t);
+    return new TextInputComp()..parent = c..name = name..type = t;
   }
 }
 
